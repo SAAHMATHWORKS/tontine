@@ -1,0 +1,147 @@
+{% extends "tontine/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<h1 style="text-align: center;">HISTORIQUE DES CONTRIBUTIONS ET SANCTIONS</h1>
+<br>
+
+<table id="example" class="stripe row-border order-column table-bordered" style="width:100%">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Séance</th>
+            <th>Noms & Prenoms</th>
+            <th>Impayé</th>
+            <th>Attendu</th>
+            <th>Règlement</th>
+            <th>Présence</th>
+            <th>Sport</th>
+            <th>Cotisation</th>
+            <th>EP</th>
+            <th>Sanction <br>Présence</th>
+            <th>ES</th>
+            <th>Sanction <br>Sport</th>
+            <th>EC</th>
+            <th>Sanction <br>Tontine</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for data in encaissements %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{data.seance.date_seance|date:"d/m/Y"}}</td>
+                <td id="name{{ data.id }}">{{data.membre.nom}}</td>
+                <td id="impaye{{ data.id }}">{{data.membre.total_impaye}}</td>
+                <td>
+                    <button class="btn btn-outline-secondary" style="width: 100%">
+                        {{data.montant_attendu}}
+                    </button>
+                </td>
+                <td>
+                    <input type="text"  size="8" value="{{data.reglement}}" id="r{{ data.id }}" readonly>
+                </td>
+                <td id="p{{ data.id }}">{{data.tontine_presence}}</td>
+                <td id="sp{{ data.id }}">{{data.tontine_sport}}</td>
+                <td id="c{{ data.id }}">{{data.tontine_cotisation}}</td>
+                <td id="ep{{ data.id }}" style="width: 1px">{{data.echec_presence}}</td>
+                <td id="sap{{ data.id }}">{{data.sanction_presence}}</td>
+                <td id="es{{ data.id }}" style="width: 1px">{{data.echec_sport}}</td>
+                <td id="sas{{ data.id }}">{{data.sanction_sport}}</td>
+                <td id="ec{{ data.id }}" style="width: 1px">{{data.echec_cotisation}}</td>
+                <td id="sac{{ data.id }}">{{data.sanction_tontine}}</td>
+            </tr>
+            {% endfor %}
+    </tbody>
+    <tfoot>
+        <tr>
+            <th>#</th>
+            <th>Séance</th>
+            <th>Noms & Prenoms</th>
+            <th>Impayé</th>
+            <th>Attendu</th>
+            <th>Règlement</th>
+            <th>Présence</th>
+            <th>Sport</th>
+            <th>Cotisation</th>
+            <th>EP</th>
+            <th>Sanction <br>Présence</th>
+            <th>ES</th>
+            <th>Sanction <br>Sport</th>
+            <th>EC</th>
+            <th>Sanction <br>Tontine</th>
+        </tr>
+    </tfoot>
+</table>
+
+
+<br>
+<br>
+<div class="container">
+    <h2>STATISTIQUES GLOBALES</h2>
+    <hr>
+    <br>
+    <div class="row">
+        <div class="col-lg-4 mt-2">
+            <div class="card" style="width: 100%;">
+                <div class="card-header">
+                    <span style="font-weight: bold;">ENCAISSEMENTS TOTAL (en fcfa) de :</span> 
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <span style="font-weight: bolder;">Présences</span> 
+                        <input type="text" value="{{tontine_presence}}" size="22" readonly>
+                    </li>
+                    <li class="list-group-item">
+                        <span style="font-weight: bolder;">Sport: </span> 
+                        <input type="text" value="{{tontine_sport}} " size="22" readonly>
+                    </li>
+                    <li class="list-group-item">
+                        <span style="font-weight: bolder;">Tontines: </span> 
+                        <input type="text" value="{{tontine_cotisation}}" size="22" readonly>
+                    </li>
+                    <li class="list-group-item">
+                        <span style="font-weight: bolder;">Total:</span>
+                        <input type="text" value="{{total}}" size="22" style="border: 1px solid blue;" readonly>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-lg-4 mt-2">
+            <div class="card" style="width: 100%;">
+                <div class="card-header">
+                    <span style="font-weight: bold;">SANCTIONS TOTAL (en fcfa) de :</span> 
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <span style="font-weight: bolder;">Présences</span> 
+                        <input type="text" value="{{sanction_presence}}" size="22" readonly>
+                    </li>
+                    <li class="list-group-item">
+                        <span style="font-weight: bolder;">Sport: </span> 
+                        <input type="text" value="{{sanction_sport}} " size="22" readonly>
+                    </li>
+                    <li class="list-group-item">
+                        <span style="font-weight: bolder;">Tontines: </span> 
+                        <input type="text" value="{{sanction_cotisation}}" size="22" readonly>
+                    </li>
+                    <li class="list-group-item">
+                        <span style="font-weight: bolder;">Total:</span>
+                        <input type="text" value="{{total_sanction}}" size="22" style="border: 1px solid blue;" readonly>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<style>
+    th{
+  color: #3f452b;
+  font-weight: bold;
+}
+td{
+    font-weight: 490;
+}
+</style>
+{% endblock %}

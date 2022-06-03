@@ -1,0 +1,58 @@
+{% extends "tontine/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<h1 style="text-align: center;">HISTORIQUE DES BENEFICIAIRES PRESENCES </h1>
+<br>
+<div class="container">
+    <table id="example" class="stripe row-border order-column table-bordered" style="width:100%">
+    <thead>
+        <tr>
+            <th>id</th>
+            <th>séance</th>
+            <th>Noms & Prenoms</th>
+            <th>Montant</th>
+            <th>Enchères</th>
+            <th>Auteur </th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for data in bch %}
+            <tr>
+                <td>{{data.id}}</td>
+                <td>{{data.seance.date_seance|date:"d/m/Y"}}</td>
+                <td>{{data.membre.nom}}</td>
+                <td>{{data.montant}}</td>
+                <td>{{data.enchere}}</td>
+                <td>{{data.author}} </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+    <tfoot>
+        <tr>
+            <th>id</th>
+            <th>séance</th>
+            <th>Noms & Prenoms</th>
+            <th>Montant</th>
+            <th>Enchères</th>
+            <th>Auteur </th>
+        </tr>
+    </tfoot>
+</table>
+</div>
+
+
+
+
+
+
+
+<style>
+    th{
+  color: #3f452b;
+  font-weight: bold;
+}
+td{
+    font-weight: 490;
+}
+</style>
+{% endblock %}

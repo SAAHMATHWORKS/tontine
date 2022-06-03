@@ -1,0 +1,57 @@
+{% extends "tontine/base.html" %}
+{% load crispy_forms_tags %}
+{% load custom_tag %}
+{% block content %}
+<div class="content-fluid">
+    <div class="row">
+        
+        <div class="col-md-8">
+            <div class="row">
+                <div class="col-md-10 offset-md-1 border">
+                    <br>
+                    <h2 style="text-align: center;">ENREGISTRER UNE <strong>ENTREE OU SORTIE</strong> SUR LE COMPTE D'ASSOCIATION</h2>
+                    <hr>
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        {{form|crispy}}
+                        {% if request.user|has_group:"commissaire_compte" %}
+                        <button class="btn btn-success mt-3 mb-3" type="submit" style="float: right;">
+                            <i class="fas fa-database"></i> ENREGISTRER
+                        </button>
+                        {% else %}
+                        <p style="font-style: italic; color: brown;">Request for specific group Permission</p>
+                        {% endif %}
+
+                    </form>
+                    <br>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="content-section"> 
+                <hr>
+                <p class='text-muted'>
+                  <ul class="list-group">
+                    {% if request.user|has_group:"commissaire_compte" %}
+                    <li class="list-group-item list-group-item-light" style="text-align: center;">
+                        SOLDE COMPTE <br>
+                        <span class="btn" style="background-color: #ed4115; width: 150px; color: white; font-weight: 600;">{{solde}}</span> 
+                    </li>
+                    {% endif %}
+
+
+                    <li class="list-group-item list-group-item-light">etc</li>
+                  </ul>
+                </p>
+              </div>
+        </div>
+    </div>
+</div>
+
+
+<style>
+    .rouge{
+        background-color: red;
+    }
+</style>
+{% endblock %}

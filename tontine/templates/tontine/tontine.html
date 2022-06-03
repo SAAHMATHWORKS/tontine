@@ -1,0 +1,232 @@
+{% extends "tontine/base.html" %}
+{% load crispy_forms_tags %}
+
+
+{% block content %}
+<div class="container-fluid">
+    <div class="d-flex justify-content-around">
+        <div class="p-2" style="text-align: center;">
+            <div>Encaissement</div>
+            <div id="totals" class="btn btn-outline-info" style="size: 11px;">
+                {% if total_encaissement %} 
+                    {{total_encaissement}}
+                    {% else %}
+                    0
+                    {% endif %}
+            </div>
+        </div>
+        <div class="p-2" style="text-align: center;">
+            <div>Présence</div>
+            <div id="totp" class="btn btn-outline-info" style="size: 11px;">
+                {% if total_presence %} 
+                    {{total_presence}}
+                    {% else %}
+                    0
+                    {% endif %}
+            </div>
+        </div>
+        <div class="p-2" style="text-align: center;">
+            <div>Sport</div>
+            <div id="tots" class="btn btn-outline-info" style="size: 11px;">
+                {% if total_sport %} 
+                    {{total_sport}}
+                    {% else %}
+                    0
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="p-2" style="text-align: center;">
+            <div>Cotisation</div>
+            <div id="totc" class="btn btn-outline-info" style="size: 11px;">
+                {% if total_cotisation %} 
+                    {{total_cotisation}}
+                    {% else %}
+                    0
+                    {% endif %}
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="row mt-3">
+        <div class="col-md-12">
+            <table id="example" class="row-border order-column table-bordered" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Noms & Prenoms</th>
+                        <th>Séance</th>
+                        <th>Impayé</th>
+                        <th>Reserve</th>
+                        <th>Attendu</th>
+                        <th>Règlement</th>
+                        <th>Validation</th>
+                        <th>Présence</th>
+                        <th>Sport</th>
+                        <th>Cotisation</th>
+                        <th>EP</th>
+                        <th>ES</th>
+                        <th>EC</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for data in encais %}
+                        <tr {% if not data.called %} style="color: crimson;" {% endif %}>
+                            <td>{{ forloop.counter }}</td>
+                            <td id="name{{ data.id }}">{{data.membre.nom}}</td>
+                            <td>{{data.seance.date_seance|date:"d/m/Y"}}</td>
+                            <td id="impaye{{ data.id }}">{{data.membre.total_impaye}}</td>
+                            <td id="reserve{{ data.id }}">
+                                {{data.membre.reserve}}
+                            </td>
+                            <td>
+                                <button class="btn btn-outline-secondary" style="width: 100%">
+                                    {{data.montant_attendu}}
+                                </button>
+                            </td>
+                            <td>
+                                <input type="number"  size="8" value="{{data.reglement}}" id="r{{ data.id }}" min="0" style="width: 100%">
+                            </td>
+                            <td>
+                                {% if s.closed %}
+                                <button  style="width: 100%" class="btn btn-outline-danger">
+                                    Closed
+                                </button>
+                                {% else %}
+                                <button data-product="{{data.id}}" style="width: 100%" class="btn btn-outline-primary send">
+                                    Envoyer
+                                </button>
+                                {% endif %}
+                            </td>
+                            <td id="p{{ data.id }}">{{data.tontine_presence}}</td>
+                            <td id="sp{{ data.id }}">{{data.tontine_sport}}</td>
+                            <td id="c{{ data.id }}">{{data.tontine_cotisation}}</td>
+                            <td id="ep{{ data.id }}" style="width: 1px">{{data.echec_presence}}</td>
+                            <td id="es{{ data.id }}" style="width: 1px">{{data.echec_sport}}</td>
+                            <td id="ec{{ data.id }}" style="width: 1px">{{data.echec_cotisation}}</td>
+                        </tr>
+                        {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th>#</th>
+                        <th>Noms & Prenoms</th>
+                        <th>Séance</th>
+                        <th>Impayé</th>
+                        <th>Reserve</th>
+                        <th>Attendu</th>
+                        <th>Règlement</th>
+                        <th>Validation</th>
+                        <th>Présence</th>
+                        <th>Sport</th>
+                        <th>Cotisation</th>
+                        <th>EP</th>
+                        <th>ES</th>
+                        <th>EC</th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+
+<br>
+<br>
+<br>
+<br>
+
+<hr>
+<br>
+<div class="container">
+    <div>Clôturez la séance</div>
+    <p>Rassurez vous des montants enregistrés avant de fermer la session.
+    </p>
+    <p>Les sanctions dues aux echecs de cotisation seront automatiquement calculées</p>
+    <p>Une session fermée ne pourra plus être ouverte</p>
+    <p>Actualisez le navigateur pour voir en rouge les noms des personnes qui n'ont fait aucun versement
+        Si vous avez oublié de leurs appeler, faites le avant de clôturer cette séance. Sinon progressez,
+        les pénalités dues aux echecs les seront imputées!
+    </p>
+    {% if s %}
+        {% if s.closed %}
+        <div  style="size: 11px;">
+            <span class="btn btn-outline-danger">Closed session</span>
+        </div>
+        {% else %}
+        <div style="size: 11px;">
+            <a href="{% url 'close_session' s.id %}" class="btn btn-outline-info" >Fermez la séance</a>
+        </div>
+        {% endif %}
+    {% endif %}
+</div>
+
+<style>
+    th{
+  color: #3f452b;
+  font-weight: bold;
+}
+td{
+    font-weight: 490;
+}
+</style>
+
+
+
+<script>
+
+var Btns = document.querySelectorAll('.send')
+
+for (i = 0; i < Btns.length; i++) {
+	Btns[i].addEventListener('click', function(){
+		var mId = this.dataset.product
+        let formData = new FormData();
+        var reg = document.querySelector('#r'+mId).value;
+        var ep = document.querySelector('#ep'+mId).value;
+        var reserve = document.querySelector('#reserve'+mId).innerHTML;
+        formData.append("mId", mId);
+        formData.append("r"+mId, document.querySelector('#r'+mId).value);
+        formData.append("reserve"+mId, document.querySelector('#reserve'+mId).innerHTML);
+        console.log('mId:', mId);
+        console.log('reserve:', reserve);
+		const request = new Request('{% url "savedata" %}',
+        {method: 'POST', headers:{'X-CSRFToken': csrftoken,}, body: formData});
+        fetch(request)
+            .then(response => response.json())
+            .then(result => {
+                console.log(result);
+                const presence=document.querySelector("#p"+mId);
+                const sport=document.querySelector("#sp"+mId);
+                const cotisation=document.querySelector("#c"+mId);
+                const echec_presence=document.querySelector("#ep"+mId);
+                const echec_sport=document.querySelector("#es"+mId);
+                const echec_cotisation=document.querySelector("#ec"+mId);
+                const totals=document.querySelector("#totals");
+                const totp=document.querySelector("#totp");
+                const tots=document.querySelector("#tots");
+                const totc=document.querySelector("#totc");
+                const reserv=document.querySelector("#reserve"+mId);
+                const impaye=document.querySelector("#impaye"+mId);
+                presence.innerHTML=result["p"];
+                sport.innerHTML=result["s"];
+                cotisation.innerHTML=result["c"];
+                echec_presence.innerHTML=result["echec_presence"];
+                echec_sport.innerHTML=result["echec_sport"];
+                echec_cotisation.innerHTML=result["echec_cotisation"];
+                totals.innerHTML=result["totals"];
+                tots.innerHTML=result["tonts"];
+                totp.innerHTML=result["tontp"];
+                totc.innerHTML=result["tontc"];
+                reserv.innerHTML=result["reserve"];
+                impaye.innerHTML=result["impaye"];
+                console.log('reserve mis à jour est:', result["reserve"])
+            })
+
+	})
+} 
+</script>
+
+{% endblock %}
+

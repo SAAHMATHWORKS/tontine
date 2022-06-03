@@ -1,0 +1,59 @@
+{% extends "tontine/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<h1 style="text-align: center;">HISTORIQUE DES ENTREES & SORTIES DU COMPTE ASSOCIATION</h1>
+<br>
+
+<table id="example" class="stripe row-border order-column table-bordered" style="width:100%">
+    <thead>
+        <tr>
+            <th>id</th>
+            <th>Opération</th>
+            <th>Date</th>
+            <th>Montant</th>
+            <th>Motif</th>
+            <th>Descriptif</th>
+            <th>Auteur</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for data in datas %}
+            <tr>
+                <td>{{data.id}}</td>
+                <td>{{data.operation}}</td>
+                <td>{{data.date|date:"d/m/Y"}}</td>
+                <td>{{data.montant}}</td>
+                <td>{{data.motif}}</td>
+                <td>{{data.description}}</td>
+                <td>{{data.author}}</td>
+            </tr>
+            {% endfor %}
+    </tbody>
+    <tfoot>
+        <tr>
+            <th>id</th>
+            <th>Opération</th>
+            <th>Date</th>
+            <th>Montant</th>
+            <th>Motif</th>
+            <th>Descriptif</th>
+            <th>Auteur</th>
+        </tr>
+    </tfoot>
+</table>
+
+
+
+
+
+
+<style>
+    th{
+  color: #3f452b;
+  font-weight: bold;
+}
+td{
+    font-weight: 490;
+}
+</style>
+{% endblock %}

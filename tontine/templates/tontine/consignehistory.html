@@ -1,0 +1,139 @@
+{% extends "tontine/base.html" %}
+{% load crispy_forms_tags %}
+{% load custom_tag %}
+{% block content %}
+<div class="container-fluid">
+    <h3 style="text-align: center;">ENREGISTREMENT PAIEMENTS PENALITES CONSIGNES</h3>
+    <br>
+    <div class="row mt-3">
+        <div class="col-md-12">
+            <table id="example" class="stripe row-border order-column table-bordered" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Noms & Prenoms</th>
+                        <th>Date de la<br>Consigne</th>
+                        <th>Montant<br>consigné</th>
+                        <th>Pénalité <br>consigne</th>
+                        <th>Règlement<br>pénalité</th>
+                        <th>Payer pénalité</th>
+                        <th>payé</th>
+                        <th>Date <br>Paiement</th>
+                        <th>Auteur</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for data in listconsignes %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td id="name{{ data.id }}" {% if data.consigne_paye == 0 %} style="color: crimson;"
+                             {% else %}
+                              style="color: blue;"  
+                            {% endif %}>
+                            {{data.membre.nom}}
+                            </td>
+                            <td>{{data.date_consigne|date:"d/m/Y"}}</td>
+                            <td>{{data.montant_consigne}}</td>
+                            <td>
+                                {% if data.consigne_paye == 0 %}
+                                <button class="btn btn-outline-danger" style="width: 100%">
+                                    {{data.penalite_consigne}}
+                                </button>
+                                {% else %}
+                                <button class="btn btn-outline-success" style="width: 100%">
+                                    {{data.penalite_consigne}}
+                                </button>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <input type="number"  size="8" value="{{data.reglement}}" id="r{{ data.id }}" min="0" step="1" style='width:100%'>
+                            </td>
+                            <td>
+                                {% if request.user|has_group:"payeur_sanction" %}
+                                    {% if data.consigne_paye == 0 %}
+                                    <button data-product="{{data.id}}" style="width: 100%" class="btn btn-outline-primary send">
+                                        Payer
+                                    </button>
+                                    {% else %}
+                                    <button  style="width: 100%" class="btn btn-outline-success">
+                                        Déjà payé
+                                    </button>
+                                    {% endif %}
+
+                                {% else %}
+                                    {% if data.consigne_paye == 0 %}
+                                    <button data-product="{{data.id}}" style="width: 100%" class="btn btn-outline-primary">
+                                        Payer
+                                    </button>
+                                    {% else %}
+                                    <button  style="width: 100%" class="btn btn-outline-success">
+                                        Déjà payé
+                                    </button>
+                                    {% endif %}
+                                {% endif %}
+                            </td>
+                            <td id="payement{{ data.id }}" style="width: 1px">{{data.consigne_paye}}</td>
+                            <td>{{data.date_paiement|date:"d/m/Y"}}</td>
+                            <td>{{data.author}}</td>
+                        </tr>
+                        {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th>#</th>
+                        <th>Noms & Prenoms</th>
+                        <th>Date de la<br>Consigne</th>
+                        <th>Montant<br>consigné</th>
+                        <th>Pénalité <br>consigne</th>
+                        <th>Règlement<br>pénalité</th>
+                        <th>Payer pénalité</th>
+                        <th>payé</th>
+                        <th>Date <br>Paiement</th>
+                        <th>Auteur</th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<style>
+    th{
+  color: #3f452b;
+  font-weight: bold;
+}
+td{
+    font-weight: 490;
+}
+</style>
+
+
+<script>
+
+    var Btns = document.querySelectorAll('.send')
+    
+    for (i = 0; i < Btns.length; i++) {
+        Btns[i].addEventListener('click', function(){
+            var mId = this.dataset.product
+            let formData = new FormData();
+            var reg = document.querySelector('#r'+mId).value;
+            formData.append("mId", mId);
+            formData.append("r"+mId, document.querySelector('#r'+mId).value);
+            console.log('mId:', mId);
+            const request = new Request('{% url "paiement_penalite_consigne" %}',
+            {method: 'POST', headers:{'X-CSRFToken': csrftoken,}, body: formData});
+            fetch(request)
+                .then(response => response.json())
+                .then(result => {
+                    console.log(result);
+                    const paye=document.querySelector("#payement"+mId);
+                    paye.innerHTML=result["paye"];
+                    console.log('paiement mis à jour est:', result["paye"])
+                })
+    
+        })
+    } 
+</script>
+
+{% endblock %}

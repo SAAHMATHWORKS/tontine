@@ -1,0 +1,87 @@
+{% extends "tontine/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<h1 style="text-align: center;">HISTORIQUE DES OPERATIONS BANQUE </h1>
+<br>
+
+<table id="example" class="stripe row-border order-column table-bordered" style="width:100%">
+    <thead>
+        <tr>
+            <th>id_op</th>
+            <th>Noms & Prenoms</th>
+            <th>Date<br>Opération</th>
+            <th>Type<br>d'Opération</th>
+            <th>Montant</th>
+            <th>Auteur </th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for data in banks %}
+            <tr>
+                <td>{{data.id}}</td>
+                <td>{{data.membre.nom}}</td>
+                <td>{{data.date|date:"d/m/Y"}}</td>
+                <td>{{data.operation}}</td>
+                <td>{{data.montant}}</td>
+                <td>{{data.author.username}} </td>
+            </tr>
+            {% endfor %}
+    </tbody>
+    <tfoot>
+        <tr>
+            <th>id_op</th>
+            <th>Noms & Prenoms</th>
+            <th>Date<br>Opération</th>
+            <th>Type<br>d'Opération</th>
+            <th>Montant</th>
+            <th>Auteur </th>
+        </tr>
+    </tfoot>
+</table>
+<br>
+<br>
+<hr>
+<h3> ETATS FINANCIERS</h3>
+<br>
+
+<div class="col-lg-4 mt-2">
+    <div class="card" style="width: 100%;">
+        <div class="card-header">
+            <span style="font-weight: bold;">LES DIFFERENTS MONTANTS TOTAUX</span> 
+        </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+                <span style="font-weight: bolder;">SOMME DES DEPÔTS: </span> 
+                <input type="text" value="{{sum_depot_bank}}" size="22" readonly>
+            </li>
+            <li class="list-group-item">
+                <span style="font-weight: bolder;">SOMME DES RETRAIT: </span> 
+                <input type="text" value="{{sum_retrait_bank}} " size="22" readonly>
+            </li>
+            <li class="list-group-item">
+                <span style="font-weight: bolder;">SOMME DES INTERÊTS: </span> 
+                <input type="text" value="{{sum_interet_bank}}" size="22" readonly>
+            </li>
+            <li class="list-group-item">
+                <span style="font-weight: bolder;">SOLDE</span>
+                <input type="text" value="{{solde}}" size="22" style="border: 1px solid blue;" readonly>
+            </li>
+        </ul>
+    </div>
+</div>
+
+
+
+
+
+<style>
+    th{
+  color: #3f452b;
+  font-weight: bold;
+}
+td{
+    font-weight: 490;
+}
+</style>
+{% endblock %}

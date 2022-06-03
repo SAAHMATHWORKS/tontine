@@ -1,0 +1,62 @@
+{% extends "tontine/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<h1 style="text-align: center;">HISTORIQUE DES PRÊTS BANQUE</h1>
+<br>
+
+<table id="example" class="stripe row-border order-column table-bordered" style="width:100%">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Profil prêt</th>
+            <th>Noms & Prenoms</th>
+            <th>Date du<br>prêt</th>
+            <th>Date fin<br>du prêt</th>
+            <th>Montant</th>
+            <th>Taux d'interêt</th>
+            <th>Auteur</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for data in prets %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{data.profil_pret_bank}}</td>
+                <td>{{data.membre.nom}}</td>
+                <td>{{data.date_pret|date:"d/m/Y"}}</td>
+                <td>{{data.date_remboursement|date:"d/m/Y"}}</td>
+                <td>{{data.montant}}</td>
+                <td>{{data.taux_interet}}</td>
+                <td>{{data.author}}</td>
+            </tr>
+            {% endfor %}
+    </tbody>
+    <tfoot>
+        <tr>
+            <th>#</th>
+            <th>Profil prêt</th>
+            <th>Noms & Prenoms</th>
+            <th>Date du<br>prêt</th>
+            <th>Date fin<br>du prêt</th>
+            <th>Montant</th>
+            <th>Taux d'interêt</th>
+            <th>Auteur</th>
+        </tr>
+    </tfoot>
+</table>
+
+
+
+
+
+
+<style>
+    th{
+  color: #3f452b;
+  font-weight: bold;
+}
+td{
+    font-weight: 490;
+}
+</style>
+{% endblock %}

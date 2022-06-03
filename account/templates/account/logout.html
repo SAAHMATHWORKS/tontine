@@ -1,0 +1,9 @@
+{% extends "tontine/base.html" %}
+{% block content %}
+<h2>Vous vous êtes deconnectés correctement</h2>
+    <div class="border-top pt-3">
+        <small class="text-muted">
+            <a class="ml-2" href="{% url 'login' %}">Connectez Vous à Nouveau</a>
+        </small>
+    </div> 
+{% endblock content %}

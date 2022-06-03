@@ -1,0 +1,81 @@
+{% extends "tontine/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<h1 style="text-align: center;">RAPPORT DES SESSIONS CLÔTUREES DE DIGNITE BANENGO</h1>
+<br>
+
+<table id="example" class="stripe row-border order-column table-bordered" style="width:100%">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Date séance</th>
+            <th>Président<br>jour</th>
+            <th>Total<br>Encaissements</th>
+            <th>Total<br>Cotisations</th>
+            <th>Total<br>Présences</th>
+            <th>Total<br>Sport</th>
+            <th>Nbr echecs<br>Cotisations</th>
+            <th>Nbr echecs<br>Présences</th>
+            <th>Mt echecs<br>Cotisations</th>
+            <th>Mt echecs<br>Présences</th>
+            <th>Closed</th>
+            <th>Auteur</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for data in seances %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>
+                    <a class="btn btn-success w-100" href="{% url 'seance_detail' data.id %}">
+                        {{data.date_seance|date:"d/m/Y"}}
+                    </a>
+                </td>
+                <td>{{data.president_jour.nom}}</td>
+                <td>{{data.total_encais}}</td>
+                <td>{{data.total_tontine}}</td>
+                <td>{{data.total_presence}}</td>
+                <td>{{data.total_sport}}</td>
+                <td>{{data.nbechec_cotisation}}</td>
+                <td>{{data.nbechec_presence}}</td>
+                <td>{{data.mtechec_cotisation}}</td>
+                <td>{{data.mtechec_presence}}</td>
+                <td>{{data.closed}}</td>
+                <td>{{data.author}}</td>
+            </tr>
+            {% endfor %}
+    </tbody>
+    <tfoot>
+        <tr>
+            <th>#</th>
+            <th>Date séance</th>
+            <th>Président<br>jour</th>
+            <th>Total<br>Encaissements</th>
+            <th>Total<br>Cotisations</th>
+            <th>Total<br>Présences</th>
+            <th>Total<br>Sport</th>
+            <th>Nbr echecs<br>Cotisations</th>
+            <th>Nbr echecs<br>Présences</th>
+            <th>Mt echecs<br>Cotisations</th>
+            <th>Mt echecs<br>Présences</th>
+            <th>Closed</th>
+            <th>Auteur</th>
+        </tr>
+    </tfoot>
+</table>
+
+
+
+
+
+
+<style>
+    th{
+  color: #3f452b;
+  font-weight: bold;
+}
+td{
+    font-weight: 490;
+}
+</style>
+{% endblock %}

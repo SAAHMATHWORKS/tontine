@@ -1,0 +1,588 @@
+{% extends "tontine/base.html" %}
+{% load crispy_forms_tags %}
+{% load custom_tag %}
+{% block content %}
+<h1 style="text-align: center;">RAPPORT DE LA SEANCE DU {{s}}</h1>
+
+<hr>
+    <br>
+    <div class="row">
+        <div class="col-lg-4 mt-2 mb-1">
+            <div class="card" style="width: 100%;">
+                <div class="card-header">
+                    <span style="font-weight: bold;">ENCAISSEMENTS TOTAL (en fcfa) de :</span> 
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <span style="font-weight: bolder;">Présences</span> 
+                        <input type="text" value="{{s.total_presence}}" size="22" style="float: right;" readonly>
+                    </li>
+                    <li class="list-group-item">
+                        <span style="font-weight: bolder;">Sport: </span> 
+                        <input type="text" value="{{s.total_sport}} " size="22" style="float: right;" readonly>
+                    </li>
+                    <li class="list-group-item">
+                        <span style="font-weight: bolder;">Tontines: </span> 
+                        <input type="text" value="{{s.total_tontine}}" size="22" style="float: right;" readonly>
+                    </li>
+                    <li class="list-group-item">
+                        <span style="font-weight: bolder;">Total encaiss:</span>
+                        <input type="text" value="{{s.total_encais}}" size="22" style="border: 1px solid blue; float: right;" readonly>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-lg-4 mt-2 mb-1">
+            <div class="card" style="width: 100%;">
+                <div class="card-header">
+                    <span style="font-weight: bold;">NOMBRE D'ECHECS :</span> 
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <span style="font-weight: bolder;">Présences</span> 
+                        <input type="text" value="{{s.nbechec_presence}}" size="22" style="float: right;" readonly>
+                    </li>
+                    <li class="list-group-item">
+                        <span style="font-weight: bolder;">Sport: </span> 
+                        <input type="text" value="{{s.nbechec_sport}} " size="22" style="float: right;" readonly>
+                    </li>
+                    <li class="list-group-item">
+                        <span style="font-weight: bolder;">Tontines: </span> 
+                        <input type="text" value="{{s.nbechec_cotisation}}" size="22" style="float: right;" readonly>
+                    </li>
+                    <li class="list-group-item">
+                        <span style="font-weight: bolder;">Total:</span>
+                        <input type="text" value="" size="22" style="border: 1px solid blue; float: right;" readonly>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+
+        <div class="col-lg-4 mt-2 mb-1">
+            <div class="card" style="width: 100%;">
+                <div class="card-header">
+                    <span style="font-weight: bold;">SANCTIONS TOTAL (en fcfa) de :</span> 
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <span style="font-weight: bolder;">Présences</span> 
+                        <input type="text" value="{{s.mtechec_presence}}" size="22" style="float: right;" readonly>
+                    </li>
+                    <li class="list-group-item">
+                        <span style="font-weight: bolder;">Sport: </span> 
+                        <input type="text" value="{{s.mtechec_sport}} " size="22" style="float: right;" readonly>
+                    </li>
+                    <li class="list-group-item">
+                        <span style="font-weight: bolder;">Tontines: </span> 
+                        <input type="text" value="{{s.mtechec_cotisation}}" size="22" style="float: right;" readonly>
+                    </li>
+                    <li class="list-group-item">
+                        <span style="font-weight: bolder;">Total:</span>
+                        <input type="text" value="" size="22" style="border: 1px solid blue; float: right;" readonly>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+    <br>
+
+    <h3>Compte d'association:</h3>
+    <div class="row">	
+        <div class="col-lg-6 mt-2 mb-1">
+            <div class="card" style="width: 100%;">
+                <div class="card-header">
+                    <span style="font-weight: bold;">Entrée d'association:</span> 
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <span style="font-weight: bolder;">Total entrée A.:</span>
+                        <input type="text" value="{{total_entree_cpt_ass}}" size="28" style="border: 1px solid blue; float: right;" readonly>
+                    </li>
+                    
+                </ul>
+            </div>
+          	<button id="bn7" onclick="checking7()" class="btn btn-outline-secondary mt-2 mb-1">Show details</button>
+ 
+	        <br>
+	        <div id="check7">
+	            
+	            <table class="table table-sm table-primary bg-primary" style="color: white;">
+	              <thead>
+	                <tr>
+	                  <th scope="col">#</th>
+	                  <th scope="col">Motif</th>
+	                  <th scope="col">Date</th>
+	                  <th scope="col">Montant</th>
+	                </tr>
+	              </thead>
+	              <tbody>
+	                {% for b in entree_cpt_ass %}
+	                <tr>
+	                  <th scope="row">{{ forloop.counter }}</th>
+	                  <td>{{b.motif}}</td>
+	                  <td> {{b.date|date:"d/m/Y"}}</td>
+	                  <td> {{b.montant}}</td>
+	                </tr>
+	                {% endfor %}
+	              </tbody>
+	            </table>   
+	        </div>
+            
+        </div>
+
+        <div class="col-lg-6 mt-2 mb-1">
+            <div class="card" style="width: 100%;">
+                <div class="card-header">
+                    <span style="font-weight: bold;">Sortie d'association:</span> 
+                </div>
+                <ul class="list-group list-group-flush">
+                	
+                    <li class="list-group-item">
+                        <span style="font-weight: bolder;">Total Sortie A.:</span>
+                        <input type="text" value="{{total_sortie_cpt_ass}}" size="28" style="border: 1px solid blue; float: right;" readonly>
+                    </li>
+                    
+                </ul>
+            </div>
+          	<button id="bn8" onclick="checking8()" class="btn btn-outline-secondary mt-2 mb-1">Show details</button>
+ 
+	        <br>
+	        <div id="check8">
+	            
+	            <table class="table table-sm table-primary bg-primary" style="color: white;">
+	              <thead>
+	                <tr>
+	                  <th scope="col">#</th>
+	                  <th scope="col">Motif</th>
+	                  <th scope="col">Date</th>
+	                  <th scope="col">Montant</th>
+	                </tr>
+	              </thead>
+	              <tbody>
+	                {% for b in sortie_cpt_ass %}
+	                <tr>
+	                  <th scope="row">{{ forloop.counter }}</th>
+	                  <td>{{b.motif}}</td>
+	                  <td> {{b.date|date:"d/m/Y"}}</td>
+	                  <td> {{b.montant}}</td>
+	                </tr>
+	                {% endfor %}
+	              </tbody>
+	            </table>   
+	        </div>
+        </div>
+    </div>
+    <br>
+
+
+    
+    <h3>Bénéficiares présence et tontine:</h3>
+    <div class="row">	
+        <div class="col-lg-6 mt-2 mb-1">
+            <div class="card" style="width: 100%;">
+                <div class="card-header">
+                    <span style="font-weight: bold;">Bénéficiares présence:</span> 
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <span style="font-weight: bolder;">Total P Bénéficié:</span>
+                        <input type="text" value="{{total_benpres}}" size="28" style="border: 1px solid blue; float: right;" readonly>
+                    </li>
+                    <li class="list-group-item">
+                        <span style="font-weight: bolder;">Total ecnhère présence:</span>
+                        <input type="text" value="{{total_enchere_presence}}" size="28" style="border: 1px solid blue; float: right;" readonly>
+                    </li>
+                    <li class="list-group-item">
+                        <span style="font-weight: bolder;">Total ecnhère présence:</span>
+                        <input type="text" value="{{total_enchere_presence}}" size="28" style="border: 1px solid blue; float: right;" readonly>
+                    </li>
+                    
+                </ul>
+            </div>
+          	<button id="bn5" onclick="checking5()" class="btn btn-outline-secondary mt-2 mb-1">Show details</button>
+ 
+	        <br>
+	        <div id="check5">
+	            
+	            <table class="table table-sm table-primary bg-primary" style="color: white;">
+	              <thead>
+	                <tr>
+	                  <th scope="col">#</th>
+	                  <th scope="col">Membre</th>
+	                  <th scope="col">Montant</th>
+	                  <th scope="col">Date</th>
+	                  <th scope="col">Valeur enchère</th>
+	                </tr>
+	              </thead>
+	              <tbody>
+	                {% for b in benpres %}
+	                <tr>
+	                  <th scope="row">{{ forloop.counter }}</th>
+	                  <td>{{b.membre.nom}}</td>
+	                  <td> {{b.montant}}</td>
+	                  <td> {{b.seance}}</td>
+	                  <td> {{b.enchere}}</td>
+	                </tr>
+	                {% endfor %}
+	              </tbody>
+	            </table>
+	            
+	        </div>
+            
+        </div>
+
+        <div class="col-lg-6 mt-2 mb-1">
+            <div class="card" style="width: 100%;">
+                <div class="card-header">
+                    <span style="font-weight: bold;">Bénéficiaires Tontine:</span> 
+                </div>
+                <ul class="list-group list-group-flush">
+                	
+                    <li class="list-group-item">
+                        <span style="font-weight: bolder;">Total T Bénéficié:</span>
+                        <input type="text" value="{{total_bencot}}" size="28" style="border: 1px solid blue; float: right;" readonly>
+                    </li>
+                    
+                    <li class="list-group-item">
+                        <span style="font-weight: bolder;">Total vide:</span>
+                        <input type="text" value="NEKI.J" size="28" style="border: 1px solid blue; float: right;" readonly>
+                    </li>
+                    
+                </ul>
+            </div>
+          	<button id="bn6" onclick="checking6()" class="btn btn-outline-secondary mt-2 mb-1">Show details</button>
+ 
+	        <br>
+	        <div id="check6">
+	            
+	            <table class="table table-sm table-primary bg-primary" style="color: white;">
+	              <thead>
+	                <tr>
+	                  <th scope="col">#</th>
+	                  <th scope="col">Membre</th>
+	                  <th scope="col">Montant</th>
+	                  <th scope="col">Date</th>
+	                  <th scope="col">Valeur enchère</th>
+	                </tr>
+	              </thead>
+	              <tbody>
+	                {% for b in bencot %}
+	                <tr>
+	                  <th scope="row">{{ forloop.counter }}</th>
+	                  <td>{{b.membre.nom}}</td>
+	                  <td> {{b.montant}}</td>
+	                  <td> {{b.seance}}</td>
+	                  <td> {{b.enchere}}</td>
+	                </tr>
+	                {% endfor %}
+	              </tbody>
+	            </table>   
+	        </div>
+        </div>
+    </div>
+    <br>
+    <h3>Opérations bancaire de la séance:</h3>
+    <div class="row">
+    	
+        <div class="col-lg-6 mt-2 mb-1">
+            <div class="card" style="width: 100%;">
+                <div class="card-header">
+                    <span style="font-weight: bold;">Depôt bancaire:</span> 
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <span style="font-weight: bolder;">Total:</span>
+                        <input type="text" value="{{total_banke}}" size="28" style="border: 1px solid blue; float: right;" readonly>
+                    </li>
+                    
+                </ul>
+            </div>
+          	<button id="bn" onclick="checking()" class="btn btn-outline-secondary mt-2 mb-1">Show details</button>
+ 
+	        <br>
+	        <div id="check">
+	            
+	            <table class="table table-sm table-primary bg-primary" style="color: white;">
+	              <thead>
+	                <tr>
+	                  <th scope="col">#</th>
+	                  <th scope="col">Membre</th>
+	                  <th scope="col">Montant</th>
+	                  <th scope="col">Date</th>
+	                </tr>
+	              </thead>
+	              <tbody>
+	                {% for b in bank_entree %}
+	                <tr>
+	                  <th scope="row">{{ forloop.counter }}</th>
+	                  <td>{{b.membre.nom}}</td>
+	                  <td> {{b.montant}}</td>
+	                  <td> {{b.date}}</td>
+	                </tr>
+	                {% endfor %}
+	              </tbody>
+	            </table>
+	            
+	        </div>
+            
+        </div>
+
+        <div class="col-lg-6 mt-2 mb-1">
+            <div class="card" style="width: 100%;">
+                <div class="card-header">
+                    <span style="font-weight: bold;">Retrait bancaire:</span> 
+                </div>
+                <ul class="list-group list-group-flush">
+                	
+                    <li class="list-group-item">
+                        <span style="font-weight: bolder;">Total:</span>
+                        <input type="text" value="{{total_bankr}}" size="28" style="border: 1px solid blue; float: right;" readonly>
+                    </li>
+                    
+                </ul>
+            </div>
+          	<button id="bn2" onclick="checking2()" class="btn btn-outline-secondary mt-2 mb-1">Show details</button>
+ 
+	        <br>
+	        <div id="check2">
+	            
+	            <table class="table table-sm table-primary bg-primary" style="color: white;">
+	              <thead>
+	                <tr>
+	                  <th scope="col">#</th>
+	                  <th scope="col">Membre</th>
+	                  <th scope="col">Montant</th>
+	                  <th scope="col">Date</th>
+	                </tr>
+	              </thead>
+	              <tbody>
+	                {% for b in bank_retrait %}
+	                <tr>
+	                  <th scope="row">{{ forloop.counter }}</th>
+	                  <td>{{b.membre.nom}}</td>
+	                  <td> {{b.montant}}</td>
+	                  <td> {{b.date}}</td>
+	                </tr>
+	                {% endfor %}
+	              </tbody>
+	            </table>   
+	        </div>
+        </div>
+    </div>
+
+
+    <br>
+        	<h3>Prêts et remboursements bancaires</h3>
+    <div class="row">
+        	
+        <div class="col-lg-6 mt-2 mb-1">
+            <div class="card" style="width: 100%;">
+                <div class="card-header">
+                    <span style="font-weight: bold;">Prêt banque Jour:</span> 
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <span style="font-weight: bolder;">Total:</span>
+                        <input type="text" value="{{total_pret}}" size="28" style="border: 1px solid blue; float: right;" readonly>
+                    </li>
+                </ul>
+            </div>
+            <button id="bn3" onclick="checking3()" class="btn btn-outline-secondary mt-2 mb-1">Show details</button>
+ 
+	        <br>
+	        <div id="check3">
+	            
+	            <table class="table table-sm table-primary bg-primary" style="color: white;">
+	              <thead>
+	                <tr>
+	                  <th scope="col">#</th>
+	                  <th scope="col">Membre</th>
+	                  <th scope="col">Montant</th>
+	                  <th scope="col">Date</th>
+	                </tr>
+	              </thead>
+	              <tbody>
+	                {% for b in pret_bank_jour %}
+	                <tr>
+	                  <th scope="row">{{ forloop.counter }}</th>
+	                  <td>{{b.membre.nom}}</td>
+	                  <td> {{b.montant}}</td>
+	                  <td> {{b.date_pret}}</td>
+	                </tr>
+	                {% endfor %}
+	              </tbody>
+	            </table>   
+	        </div>
+        </div>
+
+
+        <div class="col-lg-6 mt-2 mb-1">
+            <div class="card" style="width: 100%;">
+                <div class="card-header">
+                    <span style="font-weight: bold;">Remboursement prêt banque :</span> 
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <span style="font-weight: bolder;">Total:</span>
+                        <input type="text" value="{{total_remb}}" size="28" style="border: 1px solid blue; float: right;" readonly>
+                    </li>
+                </ul>
+            </div>
+            <button id="bn4" onclick="checking4()" class="btn btn-outline-secondary mt-2 mb-1">Show details</button>
+ 
+	        <br>
+	        <div id="check4">
+	            
+	            <table class="table table-sm table-primary bg-primary" style="color: white;">
+	              <thead>
+	                <tr>
+	                  <th scope="col">#</th>
+	                  <th scope="col">Membre</th>
+	                  <th scope="col">Montant</th>
+	                  <th scope="col">Date</th>
+	                </tr>
+	              </thead>
+	              <tbody>
+	                {% for b in remb_pret_jour %}
+	                <tr>
+	                  <th scope="row">{{ forloop.counter }}</th>
+	                  <td>{{b.pretbank.membre.nom}}</td>
+	                  <td> {{b.montant}}</td>
+	                  <td> {{b.date_remboursement}}</td>
+	                </tr>
+	                {% endfor %}
+	              </tbody>
+	            </table>   
+	        </div>
+        </div>
+    </div>
+
+
+
+
+
+    <script type="text/javascript">
+	    var x=document.getElementById("check");
+	    x.style.display = "none";
+	    var y=document.getElementById("check2");
+	    y.style.display = "none";
+
+	    var z=document.getElementById("check4");
+	    z.style.display = "none";
+
+	    var t=document.getElementById("check3");
+	    t.style.display = "none";
+
+	    var r=document.getElementById("check5");
+	    r.style.display = "none";
+
+	    var s=document.getElementById("check6");
+	    s.style.display = "none";
+
+	    var cae=document.getElementById("check7");
+	    cae.style.display = "none";
+	    var cas=document.getElementById("check8");
+	    cas.style.display = "none";
+
+	    function checking(){
+	        var button = document.getElementById('bn');
+	        if (x.style.display === "none") {
+	           x.style.display = "block"; 
+	           button.innerHTML = "Hide details";
+	        } else {
+	            x.style.display = "none";
+	            button.innerHTML = "Show details";       
+	        }
+		    }
+	
+	    
+	    function checking2(){
+	        var button = document.getElementById('bn2');
+	        if (y.style.display === "none") {
+	           y.style.display = "block"; 
+	           button.innerHTML = "Hide details";
+	        } else {
+	            y.style.display = "none";
+	            button.innerHTML = "Show details";       
+	        }
+		    }
+
+
+
+		function checking3(){
+	        var button = document.getElementById('bn3');
+	        if (t.style.display === "none") {
+	           t.style.display = "block"; 
+	           button.innerHTML = "Hide details";
+	        } else {
+	            t.style.display = "none";
+	            button.innerHTML = "Show details";       
+	        }
+		    }
+
+
+		function checking4(){
+	        var button = document.getElementById('bn4');
+	        if (z.style.display === "none") {
+	           z.style.display = "block"; 
+	           button.innerHTML = "Hide details";
+	        } else {
+	            z.style.display = "none";
+	            button.innerHTML = "Show details";       
+	        }
+		    }
+
+
+		    function checking5(){
+	        var button = document.getElementById('bn5');
+	        if (r.style.display === "none") {
+	           r.style.display = "block"; 
+	           button.innerHTML = "Hide details";
+	        } else {
+	            r.style.display = "none";
+	            button.innerHTML = "Show details";       
+	        }
+		    }
+
+
+		    function checking6(){
+	        var button = document.getElementById('bn6');
+	        if (s.style.display === "none") {
+	           s.style.display = "block"; 
+	           button.innerHTML = "Hide details";
+	        } else {
+	            s.style.display = "none";
+	            button.innerHTML = "Show details";       
+	        }
+		    }
+
+
+		    function checking7(){
+	        var button = document.getElementById('bn7');
+	        if (cae.style.display === "none") {
+	           cae.style.display = "block"; 
+	           button.innerHTML = "Hide details";
+	        } else {
+	            cae.style.display = "none";
+	            button.innerHTML = "Show details";       
+	        }
+		    }
+
+
+		    function checking8(){
+	        var button = document.getElementById('bn8');
+	        if (cas.style.display === "none") {
+	           cas.style.display = "block"; 
+	           button.innerHTML = "Hide details";
+	        } else {
+	            cas.style.display = "none";
+	            button.innerHTML = "Show details";       
+	        }
+		    }
+	</script>
+
+
+{% endblock %}

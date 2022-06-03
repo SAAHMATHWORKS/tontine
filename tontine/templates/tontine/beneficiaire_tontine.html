@@ -1,0 +1,112 @@
+{% extends "tontine/base.html" %}
+{% load crispy_forms_tags %}
+{% load custom_tag %}
+{% block content %}
+<div class="content-fluid">
+    <div class="row">
+        <div class="col-md-3" style="max-height: 650px; max-width: 400px; overflow: scroll; overflow-x: hidden;">
+            <div class="card" style="width: 100%;">
+                <div class="card-header" style="background-color: #071252; font-weight: bold; text-align: center; color: white;">
+                    MEMBRES
+                </div>
+                <input type="text" id="myInput"  onkeyup="myFunction()" placeholder="Search for names..">
+                <ul id="myUL" class="list-group list-group-flush">
+                    {% for membre in membres %}
+                    <li class="list-group-item" style="background-color: #071252;">
+                        <a class="btn btn-primary" href="/creer_beneficiaire_tontine/?membre={{membre.id}}" style="width: 100%;">
+                            {{membre.nom}}</a>
+                    </li>
+                    {% endfor %}
+                </ul>
+              </div>
+        </div>
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-10 offset-md-1 border">
+                    <br>
+                    <h2 style="text-align: center;">ENREGISTRER UN BENEFICIAIRE TONTINE</h2>
+                    <hr>
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        {{form|crispy}}
+                        {% if request.user|has_group:"creer_beneficiaire" %}
+                            <button class="btn btn-success mt-3 mb-3" type="submit" style="float: right;">
+                                <i class="fas fa-database"></i> ENREGISTRER
+                            </button>
+                        {% else %}
+                            <p style="font-style: italic; color: brown;">Request for specific group Permission</p>
+                        {% endif %}
+                    </form>
+                    <br>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="content-section"> 
+                {% if membre %}
+                <h3 style="text-align: center;">{{membre.nom}}</h3>
+                {% else %}
+                <h3 style="text-align: center;">Pick member</h3>
+                {% endif %}
+                <hr>
+                <p class='text-muted'>
+                  <ul class="list-group">
+                    <li class="list-group-item list-group-item-light" style="text-align: center;">
+                        Cumul Bénéficié <br>
+                        <span class="btn" style="background-color: #ed4115; width: 150px; color: white; font-weight: 600;">{{solde}}</span> 
+                    </li>
+                    
+                    <li class="list-group-item list-group-item-light" style="text-align: center;">
+                        Sanction cotisation <br>
+                        <span class="btn" style="background-color: #ed4115; width: 150px; color: white; font-weight: 600;">{{penalite}}</span> 
+                    </li>
+                    <li class="list-group-item list-group-item-light" style="text-align: center;">
+                        Dette banque <br>
+                        <span class="btn" style="background-color: #ed4115; width: 150px; color: white; font-weight: 600;">{{pretarembourser}}</span> 
+                    </li>
+                    <li class="list-group-item list-group-item-light">etc</li>
+                  </ul>
+                </p>
+              </div>
+        </div>
+    </div>
+</div>
+
+
+<style>
+    .rouge{
+        background-color: red;
+    }
+
+#myInput {
+  width: 100%; /* Full-width */
+  font-size: 16px; /* Increase font-size */
+  padding: 12px 20px 12px 40px; /* Add some padding */
+  border: 1px solid #ddd; /* Add a grey border */
+  margin-bottom: 1px; /* Add some space below the input */
+}
+</style>
+
+
+<script>
+function myFunction() {
+  // Declare variables
+  var input, filter, ul, li, a, i, txtValue;
+  input = document.getElementById('myInput');
+  filter = input.value.toUpperCase();
+  ul = document.getElementById("myUL");
+  li = ul.getElementsByTagName('li');
+
+  // Loop through all list items, and hide those who don't match the search query
+  for (i = 0; i < li.length; i++) {
+    a = li[i].getElementsByTagName("a")[0];
+    txtValue = a.textContent || a.innerText;
+    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+      li[i].style.display = "";
+    } else {
+      li[i].style.display = "none";
+    }
+  }
+}
+</script>
+{% endblock %}

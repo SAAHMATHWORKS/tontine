@@ -1,0 +1,220 @@
+{% extends "tontine/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="container-fluid">
+{% if request.user.is_staff %}
+<div class="row">
+    <div class="col-md-4">
+      <div class="content-section"> 
+        <h3>Tontine & Présence</h3>
+        <p class='text-muted'>Dignité Banengo
+          <ul class="list-group">
+            <li class="list-group-item list-group-item-light">
+                <a href="{% url 'create_session' %}">Créer une séance</a>
+            </li>
+
+            <li class="list-group-item list-group-item-light">
+                <a href="{% url 'post_create_session' %}">Liste des séances</a>
+            </li>
+            <li class="list-group-item list-group-item-light">
+                <a href="{% url 'contributionhistory' %}">Historique des cotisations</a>
+            </li>
+            <li class="list-group-item list-group-item-light">
+                <a href="{% url 'consigne' %}">Créer une consigne</a>
+            </li>
+          </ul>
+        </p>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="content-section"> 
+        <h3>Sanctions et Paiements</h3>
+        <p class='text-muted'>Dignité Banengo
+          <ul class="list-group">
+            <li class="list-group-item list-group-item-light">
+                <a href="{% url 'consignehistory' %}">Pénalités consignes</a>
+            </li>
+            <li class="list-group-item list-group-item-light">
+                <a href="{% url 'sanction' %}">Sanctions echecs cotisations </a>
+            </li>
+             <li class="list-group-item list-group-item-light">
+                <a href="{% url 'sanction_disciplinaire' %}">Créer Sanctions Disciplinaires</a>
+            </li>
+            <li class="list-group-item list-group-item-light">
+                <a href="{% url 'history_disciplinaire' %}">Paiement Sanction Disciplinaires</a>
+            </li>          </ul>
+        </p>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="content-section"> 
+        <h3>Bénéficiaires</h3>
+        <p class='text-muted'>Dignité Banengo
+          <ul class="list-group">
+            <li class="list-group-item list-group-item-light">
+                <a href="{% url 'creer_beneficiaire_tontine' %}">Créer Bénéficiaire Tontine</a>
+            </li>
+            <li class="list-group-item list-group-item-light">
+                <a href="{% url 'beneficiairecotisationhistory' %}">Historique bénéficiaires Tontines</a>
+            </li>
+            <li class="list-group-item list-group-item-light">
+                <a href="{% url 'creer_beneficiaire_presence' %}">Créer bénéficiaire présence</a>
+            </li>
+            <li class="list-group-item list-group-item-light">
+                <a href="{% url 'beneficiairepresencehistory' %}">Historique bénéficiaires présences</a>
+            </li>
+          </ul>
+        </p>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="content-section"> 
+        <h3>Compte Association</h3>
+         <p class='text-muted'>Dignité Banengo
+          <ul class="list-group">
+            <li class="list-group-item list-group-item-light">
+                <a href="{% url 'compte_association' %}">Entrées & Sorties Comptes</a>
+            </li>
+            <li class="list-group-item list-group-item-light">
+                <a href="{% url 'comptehistory' %}">Historiques des Comptes</a>
+            </li>
+            <li class="list-group-item list-group-item-light">
+                <a href="{% url 'create_libellecontrib' %}">Créer un libellé contribution</a>
+            </li>
+            <li class="list-group-item list-group-item-light">
+                <a href="{% url 'post_create_libellecontrib' %}">Liste contributions individuelles</a>
+            </li>
+            <li class="list-group-item list-group-item-light">
+                <a href="{% url 'session_report' %}">Rapports Financiers Séances</a>
+            </li>
+            <li class="list-group-item list-group-item-light">
+                <a href="#">DIGNITE BANENGO</a>
+            </li>
+          </ul>
+        </p>
+      </div>
+    </div>
+        
+    <div class="col-md-4">
+      <div class="content-section"> 
+        <h3>Banque</h3>
+         <p class='text-muted'>DIGNITE BANENGO
+          <ul class="list-group">
+            <li class="list-group-item list-group-item-light">
+                <a href="{% url 'bankoperation' %}">Banque</a>
+            </li>
+            <li class="list-group-item list-group-item-light">
+                <a href="{% url 'pretbank' %}">Prêts Banque</a>
+            </li>
+            <li class="list-group-item list-group-item-light">
+                <a href="{% url 'listpret' %}">Liste de prêts Banque</a>
+            </li>
+            <li class="list-group-item list-group-item-light">
+                <a href="{% url 'loanhistory' %}">Historique des prêts</a>
+            </li>
+            <li class="list-group-item list-group-item-light">
+                <a href="{% url 'refundhistory' %}">Historique remboursement prêts</a>
+            </li>
+            <li class="list-group-item list-group-item-light">
+                <a href="{% url 'bankhistory' %}">Historique opération banque</a>
+            </li>
+          </ul>
+        </p>
+      </div>
+    </div>
+
+               
+                
+    <div class="col-md-4">
+      <div class="content-section"> 
+        <h3>PROFIL</h3>
+        <p class='text-muted'>DIGNITE BANENGO
+          <ul class="list-group">
+            
+            <li class="list-group-item list-group-item-light">
+                <a href="{% url 'creer_avaliseur' %}">Créer un Avaliseur</a>
+            </li>
+            <li class="list-group-item list-group-item-light">
+                <a href="{% url 'profil_avaliseur' %}">Profil avaliseur</a>
+            </li>
+            <li class="list-group-item list-group-item-light">
+                <a href="{% url 'session_report' %}">Rapport des Séances</a>
+            </li>
+            {% if user.is_authenticated %}
+            <li class="list-group-item list-group-item-light">
+                <a href="{% url 'profile' %}">{{ request.user.username }}</a>
+            </li>
+            <li class="list-group-item list-group-item-light">
+                <a href="{% url 'logout' %}">LogOut</a>
+            </li>
+            {% endif %} 
+            <li class="list-group-item list-group-item-light">
+                <a>DIGNITE BANENGO</a>
+            </li>    
+          </ul>
+        </p>
+        
+      </div>
+    </div>
+</div>
+{% else %}
+<div class="container">
+    <div class="content-section"> 
+        <h3>Mes informations personnelles</h3>
+        <p class='text-muted'>DIGNITE BANENGO
+          <ul class="list-group">
+            <li class="list-group-item list-group-item-light">
+                <a href="{% url 'contributionhistory' %}">Historique des cotisations</a>
+            </li>
+            <li class="list-group-item list-group-item-light">
+                <a href="{% url 'beneficiairepresencehistory' %}">Historique bénéficiaires présences</a>
+            </li>
+
+            <li class="list-group-item list-group-item-light">
+                <a href="{% url 'beneficiairecotisationhistory' %}">Historique bénéficiaires Tontines</a>
+            </li>
+            <li class="list-group-item list-group-item-light">
+                <a href="{% url 'profil_avaliseur' %}">Profil avaliseur</a>
+            </li>
+             <li class="list-group-item list-group-item-light">
+                <a href="{% url 'consignehistory' %}">Pénalités consignes</a>
+            </li>
+            <li class="list-group-item list-group-item-light">
+                <a href="{% url 'sanction' %}">Sanctions echecs cotisations </a>
+            </li>
+            <li class="list-group-item list-group-item-light">
+                <a href="{% url 'listpret' %}">Liste de prêts Banque</a>
+            </li>
+            <li class="list-group-item list-group-item-light">
+                <a href="{% url 'loanhistory' %}">Historique des prêts</a>
+            </li>
+            <li class="list-group-item list-group-item-light">
+                <a href="{% url 'refundhistory' %}">Historique remboursement prêt</a>
+            </li>
+            <li class="list-group-item list-group-item-light">
+                <a href="{% url 'bankhistory' %}">Historique opération banque</a>
+            </li>
+            <li class="list-group-item list-group-item-light">
+                <a href="{% url 'post_create_libellecontrib' %}">Liste contributions individuelles</a>
+            </li>
+            {% if user.is_authenticated %}
+            <li class="list-group-item list-group-item-light">
+                <a href="{% url 'profile' %}">{{ request.user.username }}</a>
+            </li>
+            <li class="list-group-item list-group-item-light">
+                <a href="{% url 'logout' %}">LogOut</a>
+            </li>
+            {% endif %}
+
+          </ul>
+        </p>
+      </div>
+</div>
+{% endif %}
+<div class="content-section">
+    <div class="media">
+        <img class="rounded-circle account-img" src="static/images.jpg" alt="">
+    </div>
+</div>  
+</div>
+{% endblock content %}

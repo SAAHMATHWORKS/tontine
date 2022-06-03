@@ -1,0 +1,217 @@
+{% extends "tontine/base.html" %}
+{% load crispy_forms_tags %}
+{% load custom_tag %}
+{% block content %}
+<div class="container-fluid">
+    <h3 style="text-align: center;">ENREGISTREMENT PAIEMENT SANCTIONS TONTINES ET PRESENCES ICI</h3>
+    <br>
+    <div class="row mt-3">
+        <div class="col-md-12">
+            <table id="example" class="stripe row-border order-column table-bordered" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Noms & Prenoms</th>
+                        <th>Séance</th>
+                        <th>sanction<br>Présence</th>
+                        <th>Règlement<br>Sanction présence</th>
+                        <th>Payer sanction<br>présence</th>
+                        <th>S.Présence<br>payé?</th>
+                        <th>Date<br>paiement SP</th>
+                        <th>sanction<br>Cotisation</th>
+                        <th>Règlement<br>Sanction cotisation</th>
+                        <th>Payer sanction<br>cotisatisation</th>
+                        <th>S.Cotisation<br>payé?</th>
+                        <th>Date<br>paiement SC</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for data in listsanction %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td id="name{{ data.id }}" {% if data.sanction_tontine_paye == 0 %} style="color: crimson;"
+                            {% elif data.sanction_presence_paye == 0  %}
+                            style="color: crimson;"
+                             {% else %}
+                              style="color: blue;"  
+                            {% endif %}>
+                            {{data.membre.nom}}
+                            </td>
+                            <td>{{data.seance.date_seance|date:"d/m/Y"}}</td>
+                            <td>
+                                {% if data.sanction_presence_paye == 0 %}
+                                <button class="btn btn-outline-danger" style="width: 100%">
+                                    {{data.valeur_sanction_presence}}
+                                </button>
+                                {% else %}
+                                <button class="btn btn-outline-success" style="width: 100%">
+                                    {{data.valeur_sanction_presence}}
+                                </button>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <input type="number"  size="8" value="{{data.regl_sanc_presence}}" id="r_sp{{ data.id }}" min="0" step="1" style='width:100%'>
+                            </td>
+                            <td>
+                                {% if request.user|has_group:"payeur_sanction" %}
+                                    {% if data.sanction_presence_paye == 0 %}
+                                    <button data-product="{{data.id}}" style="width: 100%" class="btn btn-outline-primary sendp">
+                                        Payer
+                                    </button>
+                                    {% else %}
+                                    <button  style="width: 100%" class="btn btn-outline-success">
+                                        Déjà payé
+                                    </button>
+                                    {% endif %}
+                                {% else %}
+                                    {% if data.sanction_presence_paye == 0 %}
+                                    <button data-product="{{data.id}}" style="width: 100%" class="btn btn-outline-primary">
+                                        Payer
+                                    </button>
+                                    {% else %}
+                                    <button  style="width: 100%" class="btn btn-outline-success">
+                                        Déjà payé
+                                    </button>
+                                    {% endif %}
+                                {% endif %}
+                            </td>
+                            <td id="payement_sp{{ data.id }}" style="width: 1px">{{data.sanction_presence_paye}}</td>
+                            <td>{{data.date_paiement_sp|date:"d/m/Y"}}</td>
+
+
+
+                            <td>
+                                {% if data.sanction_tontine_paye == 0 %}
+                                <button class="btn btn-outline-danger" style="width: 100%">
+                                    {{data.valeur_sanction_tontine}}
+                                </button>
+                                {% else %}
+                                <button class="btn btn-outline-success" style="width: 100%">
+                                    {{data.valeur_sanction_tontine}}
+                                </button>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <input type="number"  size="8" value="{{data.regl_sanc_tontine}}" id="r_sc{{ data.id }}" min="0" step="1" style='width:100%'>
+                            </td>
+                            <td>
+                                {% if request.user|has_group:"payeur_sanction" %}
+                                    {% if data.sanction_tontine_paye == 0 %}
+                                    <button data-product="{{data.id}}" style="width: 100%" class="btn btn-outline-primary send">
+                                        Payer
+                                    </button>
+                                    {% else %}
+                                    <button  style="width: 100%" class="btn btn-outline-success">
+                                        Déjà payé
+                                    </button>
+                                    {% endif %}
+                                {% else %}
+                                    {% if data.sanction_tontine_paye == 0 %}
+                                    <button data-product="{{data.id}}" style="width: 100%" class="btn btn-outline-primary">
+                                        Payer
+                                    </button>
+                                    {% else %}
+                                    <button  style="width: 100%" class="btn btn-outline-success">
+                                        Déjà payé
+                                    </button>
+                                    {% endif %}
+                                {% endif %}
+
+                            </td>
+
+
+                            <td id="payement_sc{{ data.id }}" style="width: 1px">{{data.sanction_tontine_paye}}</td>
+                            <td>{{data.date_paiement_sc|date:"d/m/Y"}}</td>
+                        </tr>
+                        {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th>#</th>
+                        <th>Noms & Prenoms</th>
+                        <th>Séance</th>
+                        <th>sanction<br>Présence</th>
+                        <th>Règlement<br>Sanction présence</th>
+                        <th>Payer sanction<br>présence</th>
+                        <th>S.Présence<br>payé?</th>
+                        <th>Date<br>paiement SP</th>
+                        <th>sanction<br>Cotisation</th>
+                        <th>Règlement<br>Sanction cotisation</th>
+                        <th>Payer sanction<br>cotisatisation</th>
+                        <th>S.Cotisation<br>payé?</th>
+                        <th>Date<br>paiement SC</th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<style>
+    th{
+  color: #3f452b;
+  font-weight: bold;
+}
+td{
+    font-weight: 490;
+}
+</style>
+
+
+<script>
+
+    var Btns = document.querySelectorAll('.send')
+    
+    for (i = 0; i < Btns.length; i++) {
+        Btns[i].addEventListener('click', function(){
+            var mId = this.dataset.product
+            let formData = new FormData();
+            var reg = document.querySelector('#r_sc'+mId).value;
+            formData.append("mId", mId);
+            formData.append("r_sc"+mId, document.querySelector('#r_sc'+mId).value);
+            console.log('mId:', mId);
+            const request = new Request('{% url "paiement_sanction_tontine" %}',
+            {method: 'POST', headers:{'X-CSRFToken': csrftoken,}, body: formData});
+            fetch(request)
+                .then(response => response.json())
+                .then(result => {
+                    console.log(result);
+                    const paye_sc=document.querySelector("#payement_sc"+mId);
+                    paye_sc.innerHTML=result["paye"];
+                    console.log('paiement mis à jour est:', result["paye"])
+                })
+    
+        })
+    } 
+</script>
+
+
+
+<script>
+
+    var Btns = document.querySelectorAll('.sendp')
+    
+    for (i = 0; i < Btns.length; i++) {
+        Btns[i].addEventListener('click', function(){
+            var mId = this.dataset.product
+            let formData = new FormData();
+            var reg = document.querySelector('#r_sp'+mId).value;
+            formData.append("mId", mId);
+            formData.append("r_sp"+mId, document.querySelector('#r_sp'+mId).value);
+            console.log('mId:', mId);
+            const request = new Request('{% url "paiement_sanction_presence" %}',
+            {method: 'POST', headers:{'X-CSRFToken': csrftoken,}, body: formData});
+            fetch(request)
+                .then(response => response.json())
+                .then(result => {
+                    console.log(result);
+                    const paye_sp=document.querySelector("#payement_sp"+mId);
+                    paye_sp.innerHTML=result["paye_sp"];
+                    console.log('paiement mis à jour est:', result["paye"])
+                })
+    
+        })
+    } 
+</script>
+{% endblock %}

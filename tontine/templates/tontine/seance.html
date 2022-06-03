@@ -1,0 +1,21 @@
+{% extends "tontine/base.html" %}
+{% load crispy_forms_tags %}
+{% load custom_tag %}
+{% block content %}
+	<div class="content-section">
+        <form action="" method="POST">{% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Créer Une Séance</legend>
+                {{ form|crispy }}
+            </fieldset>
+            {% if request.user|has_group:"creer_seance" %}
+            <button class="btn btn-success mt-3 mb-3" type="submit" style="float: right;">
+                <i class="fas fa-database"></i> Créer Séance
+            </button>
+            {% else %}
+            <p style="font-style: italic; color: brown;">Request for specific group Permission</p>
+            {% endif %}
+            
+        </form>       
+    </div>
+{% endblock content %}

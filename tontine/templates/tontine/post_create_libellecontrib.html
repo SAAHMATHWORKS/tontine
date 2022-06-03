@@ -1,0 +1,19 @@
+{% extends "tontine/base.html" %}
+{% block content %}
+    <div class="container">
+        <div class="content-section"> 
+            <h3>LISTE DES LIBELLES POUR CONTRIBUTIONS</h3>
+            <p class='text-muted'>Cliquer 
+              <ul class="list-group">
+                {% for contrib_ind in listcontrib_ind %}
+                <li class="list-group-item list-group-item-light">
+                    <a href="{% url 'create_contrib_ind' contrib_ind.id %}">{{ forloop.counter }}- {{contrib_ind.libelle}}</a>
+                </li>                
+                {% endfor %}
+              </ul>
+            </p>
+        </div>
+
+    </div>
+    
+{% endblock content %}

@@ -1,0 +1,108 @@
+{% extends "tontine/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="content-section">
+    <div class="container">
+    <div class="media">
+        <img class="rounded-circle account-img" src="{{ user.profile.image.url }}" alt="">
+        <div class="media-body">
+            <h2 class="account-heading">{{ user.username }}</h2>
+            <p class="text-secondary">{{ user.email }}</p>
+            <div class="border-top pt-1">
+                <small class="text-muted">
+                    <a class="ml-2" href="{% url 'logout' %}">Deconnectez Vous si vous n'êtes pas {{ user.username }}</a>
+                </small>
+            </div> 
+        </div>
+    </div>
+    </div>
+    {% if profil == 'ok' %}
+    <div class="row">
+        
+        <div class="col-md-6">
+            <div class="content-section"> 
+                <p class='text-muted'>
+                  <ul class="list-group">
+                    <li class="list-group-item list-group-item-light" style="text-align: center;">
+                        Nb séances <br>
+                        <span class="btn" style="background-color: #9bf88f; width: 150px; color: white; font-weight: 600;">{{nb_seances}}</span> 
+                    </li>
+                    <li class="list-group-item list-group-item-light" style="text-align: center;">
+                        Total tontine <br>
+                        <span class="btn" style="background-color: #9bf88f; width: 150px; color: white; font-weight: 600;">
+                            {{tontine_cotisation}} XAF
+                        </span> 
+                    </li>
+                    <li class="list-group-item list-group-item-light" style="text-align: center;">
+                        Total présence <br>
+                        <span class="btn" style="background-color: #9bf88f; width: 150px; color: white; font-weight: 600;">
+                            {{tontine_presence}} XAF
+                        </span> 
+                    </li>
+                    <li class="list-group-item list-group-item-light" style="text-align: center;">
+                        Total sport <br>
+                        <span class="btn" style="background-color: #9bf88f; width: 150px; color: white; font-weight: 600;">
+                            {{tontine_sport}} XAF
+                        </span> 
+                    </li>
+
+                    <li class="list-group-item list-group-item-light" style="text-align: center;">
+                        Total regléments <br>
+                        <span class="btn" style="background-color: #9bf88f; width: 150px; color: white; font-weight: 600;">
+                            {{total}} XAF
+                        </span> 
+                    </li>
+
+                  </ul>
+                </p>
+              </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="content-section"> 
+                <p class='text-muted'>
+                  <ul class="list-group">
+                    <li class="list-group-item list-group-item-light" style="text-align: center;">
+                        Nb séances <br>
+                        <span class="btn" style="background-color: #9bf88f; width: 150px; color: white; font-weight: 600;">{{nb_seances}}</span> 
+                    </li>
+                    <li class="list-group-item list-group-item-light" style="text-align: center;">
+                        Echec tontine <br>
+                        <span class="btn" style="background-color: #9bf88f; width: 150px; color: white; font-weight: 600;">
+                            {{sanction_cotisation}} XAF
+                        </span> 
+                    </li>
+                    <li class="list-group-item list-group-item-light" style="text-align: center;">
+                        Echec présence <br>
+                        <span class="btn" style="background-color: #9bf88f; width: 150px; color: white; font-weight: 600;">
+                            {{sanction_presence}} XAF
+                        </span> 
+                    </li>
+                    <li class="list-group-item list-group-item-light" style="text-align: center;">
+                        Echec sport <br>
+                        <span class="btn" style="background-color: #9bf88f; width: 150px; color: white; font-weight: 600;">
+                            {{sanction_sport}} XAF
+                        </span> 
+                    </li>
+
+                    <li class="list-group-item list-group-item-light" style="text-align: center;">
+                        Total sanctions <br>
+                        <span class="btn" style="background-color: #9bf88f; width: 150px; color: white; font-weight: 600;">
+                            {{total_sanction}} XAF
+                        </span> 
+                    </li>
+
+                  </ul>
+                </p>
+              </div>
+        </div>   
+    </div>
+    {% else %}
+    <div>
+        Vous n'êtes pas inscrits aux cotisations, contactez l'admin s'il s'agit d'une erreur.
+    </div>
+    {% endif %}
+</div>
+
+
+{% endblock content %}

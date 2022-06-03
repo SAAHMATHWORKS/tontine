@@ -1,0 +1,165 @@
+{% extends "tontine/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="content-fluid">
+    <div class="row">
+        <div class="col-md-3" style="max-height: 650px; max-width: 400px; overflow: scroll; overflow-x: hidden;">
+            <div class="card" style="width: 100%;">
+                <div class="card-header" style="background-color: #071252; font-weight: bold; text-align: center; color: white;">
+                    MEMBRES
+                </div>
+                <input type="text" id="myInput"  onkeyup="myFunction()" placeholder="Search for names..">
+                <ul id="myUL" class="list-group list-group-flush">
+                    {% if request.user.is_staff %}
+                        {% for membre in membres %}
+                        <li class="list-group-item" style="background-color: #071252;">
+                            <a class="btn btn-primary" href="/profil_avaliseur/?membre={{membre.id}}" style="width: 100%;">
+                                {{membre.nom}}</a>
+                        </li>
+                        {% endfor %}
+                    {% else %}
+                    <li class="list-group-item" style="background-color: #071252;">
+                            <a class="btn btn-primary"  href="/profil_avaliseur/?membre={{request.user.membre.id}}" style="width: 100%;">
+                                {{request.user.membre.nom}}</a>
+                        </li>
+
+                    {% endif %}
+                </ul>
+              </div>
+        </div>
+        <div class="col-md-6">
+            <div class="row">
+                <h2>Profil avaliseur {{membre.nom}}</h2>
+                <br>
+                <br>
+             
+            <br>
+                <table class="table table-sm">
+                  <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">Avalisé</th>
+                      <th scope="col">Séance</th>
+                      <th scope="col">Montant avalisé</th>
+                      <th scope="col">Charge</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for avalise in mes_avalises %}
+                    <tr>
+                      <th scope="row">{{ forloop.counter }}</th>
+                      <td>{{avalise.membre.nom}} </td>
+                      <td>{{avalise.seance}} </td>
+                      <td>{{avalise.montant}} XAF</td>
+                      <td>{{avalise.charge}} XAF</td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+                <br>
+                <br>
+            <br>
+                
+                
+            </div>
+            <br>
+            <button id="bn" onclick="checking()" class="btn btn-outline-secondary">Show details</button>
+            <br>
+            <br>
+            <br>
+            <div class="container" id="check">
+                
+                    <table class="table table-sm table-primary bg-primary" style="color: white;">
+                      <thead>
+                        <tr>
+                          <th scope="col">#</th>
+                          <th scope="col">Séance</th>
+                          <th scope="col">Avalisé</th>
+                          <th scope="col">Echec Cotisation</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for enc in encaissements %}
+                        <tr>
+                          <th scope="row">{{ forloop.counter }}</th>
+                          <td>{{enc.seance}}</td>
+                          <td>{{enc.membre.nom}}</td>
+                          <td>{{enc.membre.cotisation.montant}}</td>
+                        </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="content-section"> 
+                {% if membre %}
+                <h3 style="text-align: center;">{{membre.nom}}</h3>
+                {% else %}
+                <h3 style="text-align: center;">Pick member</h3>
+                {% endif %}
+                <hr>
+                <p class='text-muted'>
+                  <ul class="list-group">
+                    <li class="list-group-item list-group-item-light">etc</li>
+                  </ul>
+                </p>
+              </div>
+        </div>
+    </div>
+</div>
+
+
+<style>
+    .rouge{
+        background-color: red;
+    }
+
+#myInput {
+  width: 100%; /* Full-width */
+  font-size: 16px; /* Increase font-size */
+  padding: 12px 20px 12px 40px; /* Add some padding */
+  border: 1px solid #ddd; /* Add a grey border */
+  margin-bottom: 1px; /* Add some space below the input */
+}
+</style>
+
+
+<script>
+function myFunction() {
+  // Declare variables
+  var input, filter, ul, li, a, i, txtValue;
+  input = document.getElementById('myInput');
+  filter = input.value.toUpperCase();
+  ul = document.getElementById("myUL");
+  li = ul.getElementsByTagName('li');
+
+  // Loop through all list items, and hide those who don't match the search query
+  for (i = 0; i < li.length; i++) {
+    a = li[i].getElementsByTagName("a")[0];
+    txtValue = a.textContent || a.innerText;
+    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+      li[i].style.display = "";
+    } else {
+      li[i].style.display = "none";
+    }
+  }
+}
+</script>
+
+<script type="text/javascript">
+    var x=document.getElementById("check");
+    x.style.display = "none";
+    function checking(){
+        var button = document.getElementById('bn');
+        if (x.style.display === "none") {
+           x.style.display = "block"; 
+           button.innerHTML = "Hide details";
+        } else {
+            x.style.display = "none";
+            button.innerHTML = "Show details";       
+        }
+    }
+</script>
+{% endblock %}
