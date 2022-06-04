@@ -89,8 +89,9 @@ class Membre(models.Model):
 
 # Exercice Tontine
 class ExerciceTontine(models.Model):
-    date_debut = models.DateTimeField()
-    franchise = models.DateTimeField()
+    date_debut = models.DateTimeField(unique=True)
+    franchise = models.PositiveIntegerField(default=0)
+    date_franchise = models.DateField(unique=True)
     nbre_semaines = models.PositiveIntegerField(default=52)
     is_active = models.BooleanField(default=True)
     created = models.DateTimeField(auto_now_add=True)

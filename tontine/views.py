@@ -220,8 +220,8 @@ def close_session(request, id):
 					if cs >= mtcot:
 					    w=0
 					    v=0
-				date_franchise = enc.seance.exercice_tontine.franchise
-				if date_franchise.date() >= s.date_seance:
+				date_fin = enc.seance.exercice_tontine.date_franchise
+				if date_fin >= s.date_seance:
 					w=0
 					v=0
 
