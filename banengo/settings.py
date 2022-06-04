@@ -166,6 +166,6 @@ EMAIL_HOST_PASSWORD = config('EMAIL_PASS')
 
 
 
-#STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 django_heroku.settings(locals())
