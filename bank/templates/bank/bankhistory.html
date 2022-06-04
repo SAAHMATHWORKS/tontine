@@ -1,4 +1,4 @@
-{% extends "tontine/base.html" %}
+{% extends "tontine/base2.html" %}
 {% load crispy_forms_tags %}
 
 {% block content %}
@@ -45,7 +45,7 @@
 <h3> ETATS FINANCIERS</h3>
 <br>
 
-<div class="col-lg-4 mt-2">
+<div class="col-lg-6 mt-2">
     <div class="card" style="width: 100%;">
         <div class="card-header">
             <span style="font-weight: bold;">LES DIFFERENTS MONTANTS TOTAUX</span> 
@@ -82,6 +82,9 @@
 }
 td{
     font-weight: 490;
+}
+li input{
+    float: right;
 }
 </style>
 {% endblock %}

@@ -14,6 +14,7 @@ from bank.models import *
 
 # Create your views here.
 
+@login_required
 def home(request):
 	context = {}
 	return render(request, 'tontine/home.html', context)
@@ -333,7 +334,7 @@ def seance_detail(request, id):
 
 	bencot = BeneficiaireTontine.objects.filter(seance=s)
 	total_bencot = sum([m.montant for m in bencot])
-	total_enchere_tontine = sum([m.frais_boissons for m in bencot])
+	total_enchere_tontine = sum([m.enchere for m in bencot])
 
 	bank_jour = [b for b in EncaissementBank.objects.all() if b.date.date()==d]
 
@@ -406,12 +407,15 @@ def creer_beneficiaire_tontine(request):
             membre = get_object_or_404(Membre, pk=params)
             context['membre']= membre
             form = BeneficiaireTontineForm(initial={'membre': membre,})
+            hist_cotisation = Encaissement.objects.filter(seance__exercice_tontine__is_active=True, membre=membre)
             hist = BeneficiaireTontine.objects.filter(seance__exercice_tontine__is_active=True, membre=membre,)    
             penalites = Sanction.objects.filter(seance__exercice_tontine__is_active=True, membre=membre)
             prets = PretBank.objects.filter(membre=membre, freeze=False)
             penalite = sum([pen.valeur_sanction_tontine for pen in penalites if pen.sanction_tontine_paye == 0])
             solde = sum([h.montant for h in hist])
+            cumul_cotisation = sum([c.tontine_cotisation for c in hist_cotisation])
             pretarembourser = sum([p.reste_a_rembourser for p in prets])
+            context['cumul_cotisation'] = cumul_cotisation
             context['penalite']= int(penalite)
             context['solde']= int(solde)
             context['pretarembourser']= int(pretarembourser)
