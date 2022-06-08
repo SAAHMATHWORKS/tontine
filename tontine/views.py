@@ -454,9 +454,11 @@ def creer_beneficiaire_presence(request):
         	hist = Encaissement.objects.filter(seance__exercice_presence__is_active=True, membre=membre) 
 
         	if ExercicePresence.objects.filter(is_active = True).exists():
-        		exercice = ExercicePresence.objects.filter(is_active = True).first()
+        		exercice = ExercicePresence.objects.filter(is_active = True).last()
         		date_debut_exercice = exercice.date_debut
-        		redirect('home')
+        	else:
+        		messages.info(request, 'Vous n\'avez pas d\'exercice présence active. Créez une!!!')
+        		return redirect('home')
 
         	benefice = BeneficiairePresence.objects.filter(seance__exercice_presence__is_active=True, membre=membre)
         	nbre = len(benefice)
@@ -475,6 +477,7 @@ def creer_beneficiaire_presence(request):
         	context['solde']= solde
         	context['nbre']= nbre
         	context['pretarembourser']= pretarembourser
+        	context['date_debut_exercice'] = date_debut_exercice
         else:
             form = BeneficiairePresenceForm()
     context['form'] = form
