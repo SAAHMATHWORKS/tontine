@@ -63,8 +63,8 @@ def	post_create_session(request):
 						# end sum montant consigne du membre
 						#print('longueur Table encaissement:', len(em))
 						attendu_tontine = len(em)* m.cotisation.montant
-						attendu_presence_sport = len_presence * (m.presence.montant + m.sport.montant)
-						attendu = attendu_tontine + attendu_presence_sport
+						attendu_presence_agape = len_presence * (m.presence.montant + m.agape.montant)
+						attendu = attendu_tontine + attendu_presence_agape
 						consigne = m.total_consigne
 						reserve = m.reserve
 						liste = [e.reglement for e in em]
@@ -95,12 +95,12 @@ def tontine(request, id):
 	
 	total_encaissement = sum([x.reglement for x in encais])
 	total_presence = sum([x.tontine_presence for x in encais])
-	total_sport =  sum([x.tontine_sport for x in encais])
+	total_agape =  sum([x.tontine_agape for x in encais])
 	total_cotisation = sum([x.tontine_cotisation for x in encais])
 	
 	context = {'encais':encais,  's': s, 
 	'total_encaissement': total_encaissement, 'total_presence': total_presence,
-	'total_sport': total_sport, 'total_cotisation': total_cotisation} #seances': seances,
+	'total_agape': total_agape, 'total_cotisation': total_cotisation} #seances': seances,
 	return render(request, 'tontine/tontine.html', context)
 
 
@@ -119,56 +119,56 @@ def savedata(request):
 	membre = enc.membre
 	enc.reglement = regl
 	p=membre.presence.montant
-	s=membre.sport.montant
+	s=membre.agape.montant
 	c=membre.cotisation.montant
 	reserves = membre.reserve
 	regl2 = regl + int(reserves)
 	if regl2 >= p+s:
 		if regl2 - (p+s)>=c:
 			enc.tontine_presence = p
-			enc.tontine_sport = s
+			enc.tontine_agape = s
 			enc.tontine_cotisation = c
 			enc.echec_presence = False
-			enc.echec_sport = False
+			enc.echec_agape = False
 			enc.echec_cotisation = False
 			enc.called = True
 			enc.author = request.user
 			enc.save()
 			echec_cotisation = "False"
-			echec_sport = "False"
+			echec_agape = "False"
 			echec_presence = "False"
 			context={'p': p, 's': s, 'c': c, 'echec_presence': echec_presence,
-					'echec_sport': echec_sport, 'echec_cotisation': echec_cotisation}
+					'echec_agape': echec_agape, 'echec_cotisation': echec_cotisation}
 		else:
 			enc.tontine_presence = p
-			enc.tontine_sport = s
+			enc.tontine_agape = s
 			enc.tontine_cotisation = 0
 			enc.echec_cotisation = True
 			enc.echec_presence = False
-			enc.echec_sport = False
+			enc.echec_agape = False
 			enc.called = True
 			enc.author = request.user
 			enc.save()
 			echec_cotisation = "True"
-			echec_sport = "False"
+			echec_agape = "False"
 			echec_presence = "False"
 			context={'p': p, 's': s, 'c': 0, 'echec_presence': echec_presence,
-					'echec_sport': echec_sport, 'echec_cotisation': echec_cotisation}
+					'echec_agape': echec_agape, 'echec_cotisation': echec_cotisation}
 	else:
 		enc.echec_presence = True
-		enc.echec_sport = True
+		enc.echec_agape = True
 		enc.echec_cotisation = True
 		enc.tontine_presence = 0
-		enc.tontine_sport = 0
+		enc.tontine_agape = 0
 		enc.tontine_cotisation = 0
 		enc.called = True
 		enc.author = request.user
 		enc.save()
 		echec_cotisation = "True"
-		echec_sport = "True"
+		echec_agape = "True"
 		echec_presence = "True"
 		context={'p': 0, 's': 0, 'c': 0, 'echec_presence': echec_presence,
-				'echec_sport': echec_sport, 'echec_cotisation': echec_cotisation}
+				'echec_agape': echec_agape, 'echec_cotisation': echec_cotisation}
 	
 
 
@@ -176,7 +176,7 @@ def savedata(request):
 	totals = sum([x.reglement for x in encs])
 	tontp = sum([x.tontine_presence for x in encs])
 
-	tonts = sum([x.tontine_sport for x in encs])
+	tonts = sum([x.tontine_agape for x in encs])
 	tontc = sum([x.tontine_cotisation for x in encs])
 	
 	context['totals'] = totals
@@ -196,36 +196,26 @@ def close_session(request, id):
 	encs = Encaissement.objects.filter(seance=s)
 	s.total_encais = sum([x.reglement for x in encs])
 	s.total_presence = sum([x.tontine_presence for x in encs])
-	s.total_sport = sum([x.tontine_sport for x in encs])
+	s.total_agape = sum([x.tontine_agape for x in encs])
 	s.total_tontine = sum([x.tontine_cotisation for x in encs])
 	for enc in encs:
 		# echec présence
 		if enc.echec_presence:
 			s.nbechec_presence +=1
 			s.mtechec_presence += enc.sanction_presence
-		if enc.echec_sport:
-			s.nbechec_sport +=1
-			s.mtechec_sport += enc.sanction_sport
+		if enc.echec_agape:
+			s.nbechec_agape +=1
+			s.mtechec_agape += enc.sanction_agape
 		if enc.echec_cotisation:
 			s.nbechec_cotisation +=1
 			s.mtechec_cotisation += enc.sanction_tontine
 			if not Sanction.objects.filter(seance=s, membre=enc.membre).exists():
 				v=enc.sanction_tontine
 				w = enc.sanction_presence
-				cons = Consigne.objects.filter(membre=enc.membre, date_consigne=s.date_seance)
-				if cons.exists():
-					mtcot = enc.membre.cotisation.montant
-					cs = sum([h.montant_consigne for h in cons])
-					csm= cons.first()
-					if cs >= mtcot:
-					    w=0
-					    v=0
 				date_fin = enc.seance.exercice_tontine.date_franchise
 				if date_fin >= s.date_seance:
 					w=0
 					v=0
-
-
 				create_s= Sanction(seance=s, membre=enc.membre, valeur_sanction_tontine=v,
 					valeur_sanction_presence=w)
 				create_s.save()
@@ -248,18 +238,18 @@ def contributionhistory(request):
 			encaissements = []
 	reglement = sum([x.reglement for x in encaissements])
 	tontine_presence = sum([x.tontine_presence for x in encaissements])
-	tontine_sport = sum([x.tontine_sport for x in encaissements])
+	tontine_agape = sum([x.tontine_agape for x in encaissements])
 	tontine_cotisation = sum([x.tontine_cotisation for x in encaissements])
-	sanction_sport = sum([x.sanction_sport for x in encaissements])
+	sanction_agape = sum([x.sanction_agape for x in encaissements])
 	sanction_presence = sum([x.sanction_presence for x in encaissements])
 	sanction_cotisation = sum([x.sanction_tontine for x in encaissements])
-	total_sanction = int(sanction_sport) + int(sanction_presence) + int(sanction_cotisation)
-	total = tontine_presence + tontine_sport + tontine_cotisation
+	total_sanction = int(sanction_agape) + int(sanction_presence) + int(sanction_cotisation)
+	total = tontine_presence + tontine_agape + tontine_cotisation
 	context = {'encaissements': encaissements, 'title':"contributionhistory",
-				"tontine_cotisation": tontine_cotisation, "tontine_sport": tontine_sport,
+				"tontine_cotisation": tontine_cotisation, "tontine_agape": tontine_agape,
 				"tontine_presence": tontine_presence, "reglement": reglement,
 				"sanction_cotisation": sanction_cotisation, "sanction_presence":sanction_presence,
-				"sanction_sport":sanction_sport, "total_sanction": total_sanction,
+				"sanction_agape":sanction_agape, "total_sanction": total_sanction,
 				"total": total}
 	
 	return render(request, 'tontine/contributionhistory.html', context)
@@ -399,7 +389,7 @@ def creer_beneficiaire_tontine(request):
             form.instance.author = request.user
             form.save()
             messages.info(request, f'{membre.nom} a bénéficié {amount} XAF !!!')
-            return redirect('creer_beneficiaire')
+            return redirect('creer_beneficiaire_tontine')
 
     else:
         if request.GET.get('membre'):
@@ -466,7 +456,7 @@ def creer_beneficiaire_presence(request):
         	penalite_consignes = Consigne.objects.filter(membre=membre, date_consigne__gte = date_debut_exercice)
         	penalites = Sanction.objects.filter(seance__exercice_presence__is_active=True, membre=membre)
         	prets = PretBank.objects.filter(membre=membre, freeze=False)
-        	penalite = sum([pen.valeur_sanction_presence for pen in penalites if pen.sanc_presence_paye == 0])
+        	penalite = sum([pen.valeur_sanction_presence for pen in penalites if pen.sanction_presence_paye == 0])
         	penalite_disciplinaire = sum([pen.montant for pen in penalite_disciplinaires if pen.sanction_paye == 0])
         	penalite_consigne = sum([pen.penalite_consigne for pen in penalite_consignes if pen.consigne_paye == 0])
         	solde = sum([h.tontine_presence for h in hist])
@@ -757,7 +747,18 @@ def consigne(request):
         if form.is_valid():
             membre = form.cleaned_data['membre']
             montantc = form.cleaned_data['montant_consigne']
-            form.instance.author = request.user
+            date_consigne = form.cleaned_data['date_consigne']
+            cs = form.save(commit=False)
+            cs.author = request.user
+            if membre.cotisation.montant < montantc:
+            	print('oui j entre')
+            	if Sanction.objects.filter(membre=membre, seance__date_seance=date_consigne).exists():
+            		print('oui j entre 2')
+            		s = Sanction.objects.filter(membre=membre, seance__date_seance=date_consigne).first()
+            		s.valeur_sanction_tontine = 0
+            		s.valeur_sanction_presence = 0
+            		print('oui j entre 3')
+            		s.save()
             form.save()
             messages.info(request, f'{membre.nom} a déposé une consigne de {montantc} !!!') 
             return redirect('consigne')

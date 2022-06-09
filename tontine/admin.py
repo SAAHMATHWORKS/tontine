@@ -4,7 +4,7 @@ from .models import *
 # Register your models here.
 
 admin.site.register(MontantBank)
-admin.site.register(MontantSport)
+admin.site.register(MontantAgape)
 admin.site.register(MontantPresence)
 admin.site.register(MontantCotisation)
 admin.site.register(Seance)
@@ -23,7 +23,7 @@ class MembreAdmin(admin.ModelAdmin):
 @admin.register(Encaissement)
 class EncaissementAdmin(admin.ModelAdmin):
     list_display = ['seance', 'membre', 'reglement', 'tontine_cotisation', 'updated', 'author']
-    list_filter = ['seance', 'tontine_cotisation', 'echec_cotisation', 'echec_presence', 'echec_sport']
+    list_filter = ['seance', 'tontine_cotisation', 'echec_cotisation', 'echec_presence', 'echec_agape']
     search_fields = ['membre__nom',]
 
 

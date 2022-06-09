@@ -2,7 +2,7 @@
 {% load crispy_forms_tags %}
 {% load custom_tag %}
 {% block content %}
-<h1 style="text-align: center;">RAPPORT DE LA SEANCE DU {{s}}</h1>
+<h1 style="text-align: center;">RAPPORT DE LA SEANCE DU {{s.date_seance|date:"d-m-Y"}}</h1>
 
 <hr>
     <br>
@@ -18,8 +18,8 @@
                         <input type="text" value="{{s.total_presence}}" size="22" style="float: right;" readonly>
                     </li>
                     <li class="list-group-item">
-                        <span style="font-weight: bolder;">Sport: </span> 
-                        <input type="text" value="{{s.total_sport}} " size="22" style="float: right;" readonly>
+                        <span style="font-weight: bolder;">Agape: </span> 
+                        <input type="text" value="{{s.total_agape}} " size="22" style="float: right;" readonly>
                     </li>
                     <li class="list-group-item">
                         <span style="font-weight: bolder;">Tontines: </span> 
@@ -44,8 +44,8 @@
                         <input type="text" value="{{s.nbechec_presence}}" size="22" style="float: right;" readonly>
                     </li>
                     <li class="list-group-item">
-                        <span style="font-weight: bolder;">Sport: </span> 
-                        <input type="text" value="{{s.nbechec_sport}} " size="22" style="float: right;" readonly>
+                        <span style="font-weight: bolder;">Agape: </span> 
+                        <input type="text" value="{{s.nbechec_agape}} " size="22" style="float: right;" readonly>
                     </li>
                     <li class="list-group-item">
                         <span style="font-weight: bolder;">Tontines: </span> 
@@ -71,8 +71,8 @@
                         <input type="text" value="{{s.mtechec_presence}}" size="22" style="float: right;" readonly>
                     </li>
                     <li class="list-group-item">
-                        <span style="font-weight: bolder;">Sport: </span> 
-                        <input type="text" value="{{s.mtechec_sport}} " size="22" style="float: right;" readonly>
+                        <span style="font-weight: bolder;">Agape: </span> 
+                        <input type="text" value="{{s.mtechec_agape}} " size="22" style="float: right;" readonly>
                     </li>
                     <li class="list-group-item">
                         <span style="font-weight: bolder;">Tontines: </span> 
@@ -192,11 +192,7 @@
                         <input type="text" value="{{total_benpres}}" size="28" style="border: 1px solid blue; float: right;" readonly>
                     </li>
                     <li class="list-group-item">
-                        <span style="font-weight: bolder;">Total ecnhère présence:</span>
-                        <input type="text" value="{{total_enchere_presence}}" size="28" style="border: 1px solid blue; float: right;" readonly>
-                    </li>
-                    <li class="list-group-item">
-                        <span style="font-weight: bolder;">Total ecnhère présence:</span>
+                        <span style="font-weight: bolder;">Total enchère présence:</span>
                         <input type="text" value="{{total_enchere_presence}}" size="28" style="border: 1px solid blue; float: right;" readonly>
                     </li>
                     
@@ -223,7 +219,7 @@
 	                  <th scope="row">{{ forloop.counter }}</th>
 	                  <td>{{b.membre.nom}}</td>
 	                  <td> {{b.montant}}</td>
-	                  <td> {{b.seance}}</td>
+	                  <td> {{b.seance.date_seance|date:"d-m-Y"}}</td>
 	                  <td> {{b.enchere}}</td>
 	                </tr>
 	                {% endfor %}
@@ -246,9 +242,9 @@
                         <input type="text" value="{{total_bencot}}" size="28" style="border: 1px solid blue; float: right;" readonly>
                     </li>
                     
-                    <li class="list-group-item">
-                        <span style="font-weight: bolder;">Total vide:</span>
-                        <input type="text" value="NEKI.J" size="28" style="border: 1px solid blue; float: right;" readonly>
+                   	<li class="list-group-item">
+                        <span style="font-weight: bolder;">Total enchère Tontine:</span>
+                        <input type="text" value="{{total_enchere_tontine}}" size="28" style="border: 1px solid blue; float: right;" readonly>
                     </li>
                     
                 </ul>
@@ -274,7 +270,7 @@
 	                  <th scope="row">{{ forloop.counter }}</th>
 	                  <td>{{b.membre.nom}}</td>
 	                  <td> {{b.montant}}</td>
-	                  <td> {{b.seance}}</td>
+	                  <td> {{b.seance.date_seance|date:"d-m-Y"}}</td>
 	                  <td> {{b.enchere}}</td>
 	                </tr>
 	                {% endfor %}
@@ -320,7 +316,7 @@
 	                  <th scope="row">{{ forloop.counter }}</th>
 	                  <td>{{b.membre.nom}}</td>
 	                  <td> {{b.montant}}</td>
-	                  <td> {{b.date}}</td>
+	                  <td> {{b.date|date:"d-m-Y"}}</td>
 	                </tr>
 	                {% endfor %}
 	              </tbody>
@@ -364,7 +360,7 @@
 	                  <th scope="row">{{ forloop.counter }}</th>
 	                  <td>{{b.membre.nom}}</td>
 	                  <td> {{b.montant}}</td>
-	                  <td> {{b.date}}</td>
+	                  <td> {{b.date|date:"d-m-Y"}}</td>
 	                </tr>
 	                {% endfor %}
 	              </tbody>
@@ -410,7 +406,7 @@
 	                  <th scope="row">{{ forloop.counter }}</th>
 	                  <td>{{b.membre.nom}}</td>
 	                  <td> {{b.montant}}</td>
-	                  <td> {{b.date_pret}}</td>
+	                  <td> {{b.date_pret|date:"d-m-Y"}}</td>
 	                </tr>
 	                {% endfor %}
 	              </tbody>
@@ -451,7 +447,7 @@
 	                  <th scope="row">{{ forloop.counter }}</th>
 	                  <td>{{b.pretbank.membre.nom}}</td>
 	                  <td> {{b.montant}}</td>
-	                  <td> {{b.date_remboursement}}</td>
+	                  <td> {{b.date_remboursement|date:"d-m-Y"}}</td>
 	                </tr>
 	                {% endfor %}
 	              </tbody>

@@ -14,12 +14,12 @@
             <th>Attendu</th>
             <th>Règlement</th>
             <th>Présence</th>
-            <th>Sport</th>
+            <th>Agape</th>
             <th>Cotisation</th>
             <th>EP</th>
             <th>Sanction <br>Présence</th>
-            <th>ES</th>
-            <th>Sanction <br>Sport</th>
+            <th>EA</th>
+            <th>Sanction <br>Agape</th>
             <th>EC</th>
             <th>Sanction <br>Tontine</th>
         </tr>
@@ -40,12 +40,12 @@
                     <input type="text"  size="8" value="{{data.reglement}}" id="r{{ data.id }}" readonly>
                 </td>
                 <td id="p{{ data.id }}">{{data.tontine_presence}}</td>
-                <td id="sp{{ data.id }}">{{data.tontine_sport}}</td>
+                <td id="sp{{ data.id }}">{{data.tontine_agape}}</td>
                 <td id="c{{ data.id }}">{{data.tontine_cotisation}}</td>
                 <td id="ep{{ data.id }}" style="width: 1px">{{data.echec_presence}}</td>
                 <td id="sap{{ data.id }}">{{data.sanction_presence}}</td>
-                <td id="es{{ data.id }}" style="width: 1px">{{data.echec_sport}}</td>
-                <td id="sas{{ data.id }}">{{data.sanction_sport}}</td>
+                <td id="es{{ data.id }}" style="width: 1px">{{data.echec_agape}}</td>
+                <td id="sas{{ data.id }}">{{data.sanction_agape}}</td>
                 <td id="ec{{ data.id }}" style="width: 1px">{{data.echec_cotisation}}</td>
                 <td id="sac{{ data.id }}">{{data.sanction_tontine}}</td>
             </tr>
@@ -60,12 +60,12 @@
             <th>Attendu</th>
             <th>Règlement</th>
             <th>Présence</th>
-            <th>Sport</th>
+            <th>Agape</th>
             <th>Cotisation</th>
             <th>EP</th>
             <th>Sanction <br>Présence</th>
-            <th>ES</th>
-            <th>Sanction <br>Sport</th>
+            <th>EA</th>
+            <th>Sanction <br>Agape</th>
             <th>EC</th>
             <th>Sanction <br>Tontine</th>
         </tr>
@@ -91,8 +91,8 @@
                         <input type="text" value="{{tontine_presence}}" size="22" readonly>
                     </li>
                     <li class="list-group-item">
-                        <span style="font-weight: bolder;">Sport: </span> 
-                        <input type="text" value="{{tontine_sport}} " size="22" readonly>
+                        <span style="font-weight: bolder;">Agape: </span> 
+                        <input type="text" value="{{tontine_agape}} " size="22" readonly>
                     </li>
                     <li class="list-group-item">
                         <span style="font-weight: bolder;">Tontines: </span> 
@@ -117,8 +117,8 @@
                         <input type="text" value="{{sanction_presence}}" size="22" readonly>
                     </li>
                     <li class="list-group-item">
-                        <span style="font-weight: bolder;">Sport: </span> 
-                        <input type="text" value="{{sanction_sport}} " size="22" readonly>
+                        <span style="font-weight: bolder;">Agape: </span> 
+                        <input type="text" value="{{sanction_agape}} " size="22" readonly>
                     </li>
                     <li class="list-group-item">
                         <span style="font-weight: bolder;">Tontines: </span> 

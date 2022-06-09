@@ -30,8 +30,8 @@ class MontantPresence(models.Model):
         return str(self.montant)
 
 
-# Montant sport
-class MontantSport(models.Model):
+# Montant agape
+class MontantAgape(models.Model):
     montant = models.PositiveIntegerField(unique=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
@@ -73,7 +73,7 @@ class Membre(models.Model):
     updated = models.DateTimeField(auto_now=True)
     cotisation = models.ForeignKey(MontantCotisation, on_delete=models.CASCADE)
     presence = models.ForeignKey(MontantPresence, on_delete=models.CASCADE)
-    sport = models.ForeignKey(MontantSport, on_delete=models.CASCADE)
+    agape = models.ForeignKey(MontantAgape, on_delete=models.CASCADE)
     bank = models.ForeignKey(MontantBank, on_delete=models.SET_NULL, blank=True, null=True)
     bank_bool = models.BooleanField(default=False)
     cotisation_bool = models.BooleanField(default=False)
@@ -121,13 +121,13 @@ class Seance(models.Model):
     exercice_presence = models.ForeignKey(ExercicePresence, on_delete=models.CASCADE)
     closed = models.BooleanField(default=False)
     total_presence = models.IntegerField(default=0)
-    total_sport = models.IntegerField(default=0)
+    total_agape = models.IntegerField(default=0)
     total_tontine = models.IntegerField(default=0)
     total_encais = models.IntegerField(default=0)
-    nbechec_sport= models.IntegerField(default=0)
+    nbechec_agape= models.IntegerField(default=0)
     nbechec_presence= models.IntegerField(default=0)
     nbechec_cotisation= models.IntegerField(default=0)
-    mtechec_sport= models.IntegerField(default=0)
+    mtechec_agape= models.IntegerField(default=0)
     mtechec_presence= models.IntegerField(default=0)
     mtechec_cotisation= models.IntegerField(default=0)
     created = models.DateTimeField(auto_now_add=True)
@@ -155,10 +155,10 @@ class Encaissement(models.Model):
     membre = models.ForeignKey(Membre, on_delete=models.CASCADE)
     reglement = models.PositiveIntegerField(default=0)
     tontine_presence = models.PositiveIntegerField(default=0)
-    tontine_sport = models.PositiveIntegerField(default=0)
+    tontine_agape = models.PositiveIntegerField(default=0)
     tontine_cotisation = models.PositiveIntegerField(default=0)
     echec_presence = models.BooleanField(default=False)
-    echec_sport = models.BooleanField(default=False)
+    echec_agape = models.BooleanField(default=False)
     echec_cotisation = models.BooleanField(default=False)
     called = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True)
@@ -181,7 +181,7 @@ class Encaissement(models.Model):
     @property
     def montant_attendu(self):
         p=self.membre.presence.montant
-        sp =self.membre.sport.montant
+        sp =self.membre.agape.montant
         c=self.membre.cotisation.montant
         attendu = int(p)+int(sp)+int(c)
         return attendu
@@ -194,8 +194,8 @@ class Encaissement(models.Model):
         return 0
 
     @property
-    def sanction_sport(self):
-        if self.echec_sport:
+    def sanction_agape(self):
+        if self.echec_agape:
             return 0
         return 0
 
@@ -297,7 +297,7 @@ class BeneficiaireTontine(models.Model):
     def charge(self):
         list_beneficier = BeneficiaireTontine.objects.filter(membre=self.membre)
         cap_beneficier = sum([value.montant for value in list_beneficier if value.seance.tontine_is_active==True])
-        d = self.membre.cotisation.montant + self.membre.presence.montant + self.membre.sport.montant
+        d = self.membre.cotisation.montant + self.membre.presence.montant + self.membre.agape.montant
         impaye_cotisation = self.membre.total_impaye * (self.membre.cotisation.montant/d)
         impaye_cotisation = int(impaye_cotisation)
         reserve = self.membre.reserve * (self.membre.cotisation.montant/d)

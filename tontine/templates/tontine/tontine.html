@@ -26,10 +26,10 @@
             </div>
         </div>
         <div class="p-2" style="text-align: center;">
-            <div>Sport</div>
+            <div>Agape</div>
             <div id="tots" class="btn btn-outline-info" style="size: 11px;">
-                {% if total_sport %} 
-                    {{total_sport}}
+                {% if total_agape %} 
+                    {{total_agape}}
                     {% else %}
                     0
                 {% endif %}
@@ -62,10 +62,10 @@
                         <th>Règlement</th>
                         <th>Validation</th>
                         <th>Présence</th>
-                        <th>Sport</th>
+                        <th>Agape</th>
                         <th>Cotisation</th>
                         <th>EP</th>
-                        <th>ES</th>
+                        <th>EA</th>
                         <th>EC</th>
                     </tr>
                 </thead>
@@ -99,10 +99,10 @@
                                 {% endif %}
                             </td>
                             <td id="p{{ data.id }}">{{data.tontine_presence}}</td>
-                            <td id="sp{{ data.id }}">{{data.tontine_sport}}</td>
+                            <td id="sp{{ data.id }}">{{data.tontine_agape}}</td>
                             <td id="c{{ data.id }}">{{data.tontine_cotisation}}</td>
                             <td id="ep{{ data.id }}" style="width: 1px">{{data.echec_presence}}</td>
-                            <td id="es{{ data.id }}" style="width: 1px">{{data.echec_sport}}</td>
+                            <td id="es{{ data.id }}" style="width: 1px">{{data.echec_agape}}</td>
                             <td id="ec{{ data.id }}" style="width: 1px">{{data.echec_cotisation}}</td>
                         </tr>
                         {% endfor %}
@@ -118,10 +118,10 @@
                         <th>Règlement</th>
                         <th>Validation</th>
                         <th>Présence</th>
-                        <th>Sport</th>
+                        <th>Agape</th>
                         <th>Cotisation</th>
                         <th>EP</th>
-                        <th>ES</th>
+                        <th>EA</th>
                         <th>EC</th>
                     </tr>
                 </tfoot>
@@ -199,10 +199,10 @@ for (i = 0; i < Btns.length; i++) {
             .then(result => {
                 console.log(result);
                 const presence=document.querySelector("#p"+mId);
-                const sport=document.querySelector("#sp"+mId);
+                const agape=document.querySelector("#sp"+mId);
                 const cotisation=document.querySelector("#c"+mId);
                 const echec_presence=document.querySelector("#ep"+mId);
-                const echec_sport=document.querySelector("#es"+mId);
+                const echec_agape=document.querySelector("#es"+mId);
                 const echec_cotisation=document.querySelector("#ec"+mId);
                 const totals=document.querySelector("#totals");
                 const totp=document.querySelector("#totp");
@@ -211,10 +211,10 @@ for (i = 0; i < Btns.length; i++) {
                 const reserv=document.querySelector("#reserve"+mId);
                 const impaye=document.querySelector("#impaye"+mId);
                 presence.innerHTML=result["p"];
-                sport.innerHTML=result["s"];
+                agape.innerHTML=result["s"];
                 cotisation.innerHTML=result["c"];
                 echec_presence.innerHTML=result["echec_presence"];
-                echec_sport.innerHTML=result["echec_sport"];
+                echec_agape.innerHTML=result["echec_agape"];
                 echec_cotisation.innerHTML=result["echec_cotisation"];
                 totals.innerHTML=result["totals"];
                 tots.innerHTML=result["tonts"];
