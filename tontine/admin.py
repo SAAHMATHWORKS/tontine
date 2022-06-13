@@ -83,8 +83,13 @@ class LibelleContributionAdmin(admin.ModelAdmin):
 
 @admin.register(ContributionIndividuelle)
 class ContributionIndividuelleAdmin(admin.ModelAdmin):
-    list_display = ['motif','membre', 'reglement', 'date_reglement',]
+    list_display = ['motif','membre', 'reglement',]
     search_fields = ['membre__nom',]
+
+
+@admin.register(VersementContributionIndividuelle)
+class VersementContributionIndividuelleAdmin(admin.ModelAdmin):
+    list_display = ['contrib_ind', 'montant',]
 
 
 @admin.register(ExerciceTontine)

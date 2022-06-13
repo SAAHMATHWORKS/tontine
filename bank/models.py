@@ -40,7 +40,7 @@ class PretBank(models.Model):
     membre = models.ForeignKey(Membre, on_delete=models.CASCADE)
     profil_pret_bank = models.ForeignKey(ProfilPretBank, on_delete=models.SET_NULL, blank=True, null=True)
     montant = models.PositiveIntegerField()
-    avaliseur = models.CharField(max_length=50, blank=True, null=True)
+    garantie = models.CharField(max_length=50, blank=True, null=True)
     date_remboursement =models.DateTimeField()
     taux_interet = models.PositiveIntegerField()
     created = models.DateTimeField(auto_now_add=True)

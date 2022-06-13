@@ -24,7 +24,7 @@ class BankForm(forms.ModelForm):
 class PretBankForm(forms.ModelForm):
     class Meta:
         model = PretBank
-        fields = ('date_pret', 'membre', 'profil_pret_bank', 'montant', 'avaliseur', 'date_remboursement', 'taux_interet',)
+        fields = ('date_pret', 'membre', 'profil_pret_bank', 'montant', 'garantie', 'date_remboursement', 'taux_interet',)
         widgets={
                 "date_pret": DateInput(),
                 "date_remboursement": DateInput(),
@@ -34,7 +34,7 @@ class PretBankForm(forms.ModelForm):
             "membre": "Membre",
             "profil_pret_bank": "Profil prêt",
             "montant": "Montant en FCFA",
-            "avaliseur": "Avaliseur",
+            "garantie": "Garantie",
             "date_remboursement": "Date de Remboursement",
             "taux_interet": "Taux d'interêt en %",
 
@@ -43,20 +43,20 @@ class PretBankForm(forms.ModelForm):
 class PretBankiForm(forms.ModelForm):
     class Meta:
         model = PretBank
-        fields = ('date_pret', 'membre', 'profil_pret_bank', 'montant', 'avaliseur', 'date_remboursement', 'taux_interet',)
+        fields = ('date_pret', 'montant', 'profil_pret_bank', 'date_remboursement', 'taux_interet', 'garantie','membre',)
         widgets={
-                'montant': forms.HiddenInput(),
+                'montant': TextInput(attrs={'readonly': 'readonly'} ),
                 'membre': forms.HiddenInput(),
                 "date_pret": DateInput(),
-                "date_remboursement": DateInput(),        }
+                "date_remboursement": DateInput(), }
         labels = {
             "date_pret": "Date du Prêt",
-            "membre": "Membre",
-            "profil_pret_bank": "Profil prêt",
             "montant": "Montant",
-            "avaliseur": "Avaliseur",
+            "profil_pret_bank": "Profil prêt",         
             "date_remboursement": "Date de Remboursement",
             "taux_interet": "Taux d'interêt en %",
+            "avaliseur": "Avaliseur",
+            "membre": "Membre",
 
         }
 
@@ -67,6 +67,7 @@ class RemboursementPretBankForm(forms.ModelForm):
         fields = ('pretbank', 'date_remboursement', 'montant',)
         widgets={
                 "date_remboursement": DateInput(),
+                "pretbank": TextInput(attrs={'readonly': 'readonly'} ),
         }
         labels = {
             "date_remboursement": "Date de Remboursement",

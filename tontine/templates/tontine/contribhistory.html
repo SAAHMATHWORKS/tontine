@@ -1,0 +1,59 @@
+{% extends "tontine/base2.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<h1 style="text-align: center;">HISTORIQUE VERSEMENT CONTRIBUTION INDIVIDUELLE</h1>
+<br>
+
+<div class="container">
+    <table id="example" class="stripe row-border order-column table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Libellé</th>
+                <th>Noms & Prenoms</th>
+                <th>Date<br>Versement</th>
+                <th>Montant<br>Versé</th>
+                <th>Auteur</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for data in contribs %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{data.contrib_ind.motif.libelle}}</td>
+                    <td>{{data.contrib_ind.membre.nom}}</td>
+                    <td>{{data.date_versement}}</td>
+                    <td>{{data.montant}}</td>
+                    <td>{{ data.author}}</td>
+                </tr>
+                {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <th>#</th>
+                <th>Libellé</th>
+                <th>Noms & Prenoms</th>
+                <th>Date<br>Remboursement</th>
+                <th>Montant</th>
+                <th>Auteur</th>
+            </tr>
+        </tfoot>
+    </table>   
+</div>
+
+
+
+
+
+
+
+<style>
+    th{
+  color: #3f452b;
+  font-weight: bold;
+}
+td{
+    font-weight: 490;
+}
+</style>
+{% endblock %}

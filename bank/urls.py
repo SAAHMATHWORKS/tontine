@@ -11,4 +11,5 @@ urlpatterns = [
     path('refundhistory/', views.refundhistory, name='refundhistory'),
     path('bankhistory/', views.bankhistory, name='bankhistory'),
     path('rembpretbank/', views.rembpretbank, name='rembpretbank'),
+    
 ]

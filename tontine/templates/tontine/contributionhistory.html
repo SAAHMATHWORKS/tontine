@@ -10,7 +10,6 @@
             <th>#</th>
             <th>Séance</th>
             <th>Noms & Prenoms</th>
-            <th>Impayé</th>
             <th>Attendu</th>
             <th>Règlement</th>
             <th>Présence</th>
@@ -30,7 +29,6 @@
                 <td>{{ forloop.counter }}</td>
                 <td>{{data.seance.date_seance|date:"d/m/Y"}}</td>
                 <td id="name{{ data.id }}">{{data.membre.nom}}</td>
-                <td id="impaye{{ data.id }}">{{data.membre.total_impaye}}</td>
                 <td>
                     <button class="btn btn-outline-secondary" style="width: 100%">
                         {{data.montant_attendu}}
@@ -56,7 +54,6 @@
             <th>#</th>
             <th>Séance</th>
             <th>Noms & Prenoms</th>
-            <th>Impayé</th>
             <th>Attendu</th>
             <th>Règlement</th>
             <th>Présence</th>

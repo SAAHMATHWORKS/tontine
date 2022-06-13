@@ -58,4 +58,6 @@ urlpatterns = [
     path('post_create_libellecontrib/', views.post_create_libellecontrib, name='post_create_libellecontrib'),
     #versement_contrib_ind
     path('versement_contrib_ind/', views.versement_contrib_ind, name='versement_contrib_ind'),
+
+    path('historique-contrib-individuelle/', views.history_contrib_ind, name='history_contrib_ind'),
 ]

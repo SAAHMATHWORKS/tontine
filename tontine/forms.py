@@ -131,7 +131,25 @@ class LibelleContributionForm(forms.ModelForm):
         }
         labels = {
             "libelle": "Libellé",
-            "date": "Date",
+            "date": "Date Echéance",
             "minimum": "Montant en FCFA",
 
+        }
+
+
+
+
+# versement contribution individuelle
+class VersementContributionIndividuelleForm(forms.ModelForm):
+    class Meta:
+        model = VersementContributionIndividuelle
+        fields = ('contrib_ind', 'date_versement', 'montant',)
+        widgets={
+                "date_versement": DateInput(),
+                "contrib_ind": TextInput(attrs={'readonly': 'readonly'} ),
+        }
+        labels = {
+            "date_versement": "Date Versement",
+            "contrib_ind": "Id Contribution individuelle",
+            "montant": "Montant en FCFA",
         }

@@ -692,7 +692,7 @@ def post_create_libellecontrib(request):
 		if not ContributionIndividuelle.objects.filter(motif=libelle).exists():
 			for m in Membre.objects.all():
 				row = ContributionIndividuelle(motif = libelle,
-				membre = m,
+				membre = m, author = request.user
 				)
 				row.save()
 	
@@ -719,7 +719,7 @@ def	create_contrib_ind(request, id):
 
 # paiement contribution individuelle
 @staff_member_required
-def versement_contrib_ind(request):
+def versement_contrib_indpoto(request):
 	# mId id of target row
 	mId=request.POST.get('mId')
 	r=request.POST.get('r'+mId)
@@ -731,6 +731,70 @@ def versement_contrib_ind(request):
 	versement.save()
 	context = {'paye': regl}
 	return JsonResponse(context)
+
+
+#Remboursement prêt bank
+@staff_member_required
+def versement_contrib_ind(request):
+    context = {}
+    form = VersementContributionIndividuelleForm()
+    if request.method == "POST":
+        form = VersementContributionIndividuelleForm(request.POST)
+        if form.is_valid():
+            contrib_ind = form.cleaned_data['contrib_ind']
+            amount = int(form.cleaned_data['montant'])
+            contrib_ind.reglement+=amount
+            contrib_ind.save()
+            form.instance.author = request.user
+            form.save()
+            messages.info(request, f'{amount}fcfa de versement de type Contribution Individuelle pour {contrib_ind.membre.nom}!!!')
+            return redirect('post_create_libellecontrib')
+    else:
+        if request.GET.get('contribind_id'):
+            params = request.GET.get('contribind_id')
+            contrib_ind = get_object_or_404(ContributionIndividuelle, pk=params)
+            membre = contrib_ind.membre
+            versement_restant = contrib_ind.versement_restant
+            context['versement_restant'] = versement_restant
+            context['membre']= membre
+            context['contrib_ind']= contrib_ind
+            form = VersementContributionIndividuelleForm(initial={'contrib_ind': contrib_ind, 
+            	'date_versement': timezone.now()})
+        else:
+            form = VersementContributionIndividuelleForm()
+        
+    context['form']= form
+    return render(request, 'tontine/versement_contrib_ind.html', context)
+
+
+
+
+# Historique des versement contributions individuelles
+@login_required
+def history_contrib_ind(request):
+    if request.user.is_staff:
+        contribs = VersementContributionIndividuelle.objects.all()
+    else:
+        try:
+            m = request.user.membre
+            prets = VersementContributionIndividuelle.objects.filter(membre=m)
+        except Exception as e:
+            prets = []
+    context = {'prets': prets}
+    return render(request, "bank/loanhistory.html", context)
+
+@login_required
+def history_contrib_ind(request):
+    if request.user.is_staff:
+        contribs = VersementContributionIndividuelle.objects.all()
+    else:
+        try:
+            m=request.user.membre
+            contribs = VersementContributionIndividuelle.objects.filter(contrib_ind__membre = m)
+        except Exception as e:
+            contribs = []
+    context = {'contribs': contribs}
+    return render(request, "tontine/contribhistory.html", context)
 
 
 

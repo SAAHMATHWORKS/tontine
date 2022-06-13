@@ -13,11 +13,13 @@
                         <th>#</th>
                         <th>Noms & Prenoms</th>
                         <th>Taux</th>
-                        <th>Règlement</th>
-                        <th>Payer</th>
-                        <th>payé</th>
+                        <th>Déjà Règlé</th>
+                        <th>Versement Restant</th>
                         <th>Mise à jour</th>
                         <th>Auteur</th>
+                        <th>Date Echéance</th>
+                        <th>Action</th>
+                        <th>Payé</th>                        
                     </tr>
                 </thead>
                 <tbody>
@@ -32,34 +34,40 @@
                             </td>
                             <td>{{data.motif.minimum}} XAF</td>
                             <td>
-                                <input type="number"  size="8" value="{{data.reglement}}" id="r{{ data.id }}" min="0" step="1" style='width:100%'>
+                                <input type="number"  size="8" value="{{data.reglement}}" id="r{{ data.id }}" min="0" step="1" style='width:100%' readonly>
                             </td>
+                            <td>
+                                <button style="width: 100%" class="btn btn-outline-secondary">
+                                    {{ data.versement_restant }}
+                                </button>
+                            </td>
+                            <td>{{data.updated|date:"d/m/Y"}}</td>
+                            <td>{{data.author}}</td>
+                            <td>{{data.motif.date}}</td>
                             <td>
                                 {% if request.user|has_group:"commissaire_compte" %}
                                     {% if data.taux_paye == 0 %}
-                                    <button data-product="{{data.id}}" style="width: 100%" class="btn btn-outline-primary send">
+                                    <a href="{% url 'versement_contrib_ind' %}?contribind_id={{data.id}}" style="width: 100%" class="btn btn-outline-primary">
                                         Contribuer
-                                    </button>
+                                    </a>
                                     {% else %}
-                                    <button  style="width: 100%" class="btn btn-outline-success">
+                                    <a  style="width: 100%" class="btn btn-outline-success">
                                         Déjà fait
-                                    </button>
+                                    </a>
                                     {% endif %}
                                 {% else %}
                                     {% if data.taux_paye == 0 %}
-                                    <button data-product="{{data.id}}" style="width: 100%" class="btn btn-outline-primary">
+                                    <a style="width: 100%" class="btn btn-outline-primary">
                                         Contribuer
-                                    </button>
+                                    </a>
                                     {% else %}
-                                    <button  style="width: 100%" class="btn btn-outline-success">
+                                    <a  style="width: 100%" class="btn btn-outline-success">
                                         Déjà fait
-                                    </button>
+                                    </a>
                                     {% endif %}
                                 {% endif %}
                             </td>
-                            <td id="payement{{ data.id }}" style="width: 1px">{{data.taux_paye}}</td>
-                            <td>{{data.updated|date:"d/m/Y"}}</td>
-                            <td>{{data.author}}</td>
+                            <td id="payement{{ data.id }}" style="width: 1px">{{data.taux_paye}}</td>                
                         </tr>
                         {% endfor %}
                 </tbody>
@@ -68,11 +76,13 @@
                         <th>#</th>
                         <th>Noms & Prenoms</th>
                         <th>Taux</th>
-                        <th>Règlement</th>
-                        <th>Payer</th>
-                        <th>payé</th>
+                        <th>Déjà Règlé</th>
+                        <th>Versement Restant</th>
                         <th>Mise à jour</th>
                         <th>Auteur</th>
+                        <th>Date Echéance</th>
+                        <th>Action</th>
+                        <th>Payé</th>
                     </tr>
                 </tfoot>
             </table>

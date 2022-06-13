@@ -12,8 +12,8 @@ class EncaissementBankAdmin(admin.ModelAdmin):
 
 @admin.register(PretBank)
 class PretBankAdmin(admin.ModelAdmin):
-    list_display = ['date_pret', 'montant', 'membre', 'avaliseur', 'date_remboursement','author']
-    search_fields = ['membre', 'avaliseur']
+    list_display = ['date_pret', 'montant', 'membre', 'garantie', 'date_remboursement','author']
+    search_fields = ['membre', 'garantie']
 
 
 

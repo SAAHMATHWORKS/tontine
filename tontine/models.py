@@ -380,7 +380,6 @@ class ContributionIndividuelle(models.Model):
     motif = models.ForeignKey(LibelleContribution, on_delete=models.CASCADE)
     membre = models.ForeignKey(Membre, on_delete=models.CASCADE)
     reglement = models.PositiveIntegerField(default=0)
-    date_reglement = models.DateTimeField(auto_now=True)
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
     author= models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
@@ -391,3 +390,19 @@ class ContributionIndividuelle(models.Model):
             return 1
         return 0
 
+    @property
+    def versement_restant(self):
+        v = self.motif.minimum - self.reglement
+        return v
+
+
+
+
+# Remboursement prêt bancaire reste_a_rembourser montant_remboursement
+class VersementContributionIndividuelle(models.Model):
+    contrib_ind = models.ForeignKey(ContributionIndividuelle, on_delete=models.CASCADE)
+    date_versement =models.DateTimeField()
+    montant = models.PositiveIntegerField()
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+    author= models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
