@@ -399,7 +399,7 @@ def creer_beneficiaire_tontine(request):
             form = BeneficiaireTontineForm(initial={'membre': membre,})
             hist_cotisation = Encaissement.objects.filter(seance__exercice_tontine__is_active=True, membre=membre)
             hist = BeneficiaireTontine.objects.filter(seance__exercice_tontine__is_active=True, membre=membre,)    
-            penalites = Sanction.objects.filter(seance__exercice_tontine__is_active=True, membre=membre)
+            penalites = Sanction.objects.filter(seance__exercice_tontine__is_active=True, membre=membre).exclude(freeze=True)
             prets = PretBank.objects.filter(membre=membre, freeze=False)
             penalite = sum([pen.valeur_sanction_tontine for pen in penalites if pen.sanction_tontine_paye == 0])
             solde = sum([h.montant for h in hist])
@@ -454,7 +454,7 @@ def creer_beneficiaire_presence(request):
         	nbre = len(benefice)
         	penalite_disciplinaires = SanctionDisciplinaire.objects.filter(membre=membre)
         	penalite_consignes = Consigne.objects.filter(membre=membre, date_consigne__gte = date_debut_exercice)
-        	penalites = Sanction.objects.filter(seance__exercice_presence__is_active=True, membre=membre)
+        	penalites = Sanction.objects.filter(seance__exercice_presence__is_active=True, membre=membre).exclude(freeze=True)
         	prets = PretBank.objects.filter(membre=membre, freeze=False)
         	penalite = sum([pen.valeur_sanction_presence for pen in penalites if pen.sanction_presence_paye == 0])
         	penalite_disciplinaire = sum([pen.montant for pen in penalite_disciplinaires if pen.sanction_paye == 0])
@@ -814,16 +814,18 @@ def consigne(request):
             date_consigne = form.cleaned_data['date_consigne']
             cs = form.save(commit=False)
             cs.author = request.user
-            if membre.cotisation.montant < montantc:
-            	print('oui j entre')
+            membre.total_consigne += montantc
+            membre.save()
+            attendu = membre.cotisation.montant + membre.presence.montant+ membre.agape.montant
+            if attendu < montantc+1:
+            	#print('oui j entre')
             	if Sanction.objects.filter(membre=membre, seance__date_seance=date_consigne).exists():
-            		print('oui j entre 2')
+            		#print('oui j entre 2')
             		s = Sanction.objects.filter(membre=membre, seance__date_seance=date_consigne).first()
-            		s.valeur_sanction_tontine = 0
-            		s.valeur_sanction_presence = 0
-            		print('oui j entre 3')
+            		s.freeze = True
+            		messages.warning(request, f'Les sanctions du jour de {membre.nom} vient d\'être freezées!!!') 
             		s.save()
-            form.save()
+            cs.save()
             messages.info(request, f'{membre.nom} a déposé une consigne de {montantc} !!!') 
             return redirect('consigne')
     else:

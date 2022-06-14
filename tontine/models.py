@@ -244,6 +244,7 @@ class Sanction(models.Model):
     updated = models.DateTimeField(auto_now=True)
     valeur_sanction_tontine = models.PositiveIntegerField(default=0)
     valeur_sanction_presence = models.PositiveIntegerField(default=0)
+    freeze = models.BooleanField(default=False)
 
     @property
     def is_active(self):

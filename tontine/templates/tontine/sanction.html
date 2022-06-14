@@ -29,12 +29,18 @@
                     {% for data in listsanction %}
                         <tr>
                             <td>{{ forloop.counter }}</td>
-                            <td id="name{{ data.id }}" {% if data.sanction_tontine_paye == 0 %} style="color: crimson;"
-                            {% elif data.sanction_presence_paye == 0  %}
-                            style="color: crimson;"
-                             {% else %}
-                              style="color: blue;"  
-                            {% endif %}>
+                            <td id="name{{ data.id }}"
+                            {% if data.freeze %}
+                            style="color: cadetblue;"
+                            {% else %} 
+                                {% if data.sanction_tontine_paye == 0 %} style="color: crimson;"
+                                {% elif data.sanction_presence_paye == 0  %}
+                                style="color: crimson;"
+                                 {% else %}
+                                  style="color: blue;"  
+                                {% endif %}
+                            {% endif %}
+                                >
                             {{data.membre.nom}}
                             </td>
                             <td>{{data.seance.date_seance|date:"d/m/Y"}}</td>
@@ -55,9 +61,15 @@
                             <td>
                                 {% if request.user|has_group:"payeur_sanction" %}
                                     {% if data.sanction_presence_paye == 0 %}
-                                    <button data-product="{{data.id}}" style="width: 100%" class="btn btn-outline-primary sendp">
-                                        Payer
-                                    </button>
+                                        {% if data.freeze %}
+                                        <button data-product="{{data.id}}" style="width: 100%" class="btn btn-outline-primary">
+                                            Freezé
+                                        </button>
+                                        {% else %}
+                                        <button data-product="{{data.id}}" style="width: 100%" class="btn btn-outline-primary sendp">
+                                            Payer
+                                        </button>
+                                        {% endif %}
                                     {% else %}
                                     <button  style="width: 100%" class="btn btn-outline-success">
                                         Déjà payé
@@ -65,9 +77,15 @@
                                     {% endif %}
                                 {% else %}
                                     {% if data.sanction_presence_paye == 0 %}
-                                    <button data-product="{{data.id}}" style="width: 100%" class="btn btn-outline-primary">
-                                        Payer
-                                    </button>
+                                        {% if data.freeze %}
+                                        <button data-product="{{data.id}}" style="width: 100%" class="btn btn-outline-primary">
+                                            Freezé
+                                        </button>
+                                        {% else %}
+                                        <button data-product="{{data.id}}" style="width: 100%" class="btn btn-outline-primary">
+                                            Payer
+                                        </button>
+                                        {% endif %}
                                     {% else %}
                                     <button  style="width: 100%" class="btn btn-outline-success">
                                         Déjà payé
@@ -97,9 +115,15 @@
                             <td>
                                 {% if request.user|has_group:"payeur_sanction" %}
                                     {% if data.sanction_tontine_paye == 0 %}
-                                    <button data-product="{{data.id}}" style="width: 100%" class="btn btn-outline-primary send">
-                                        Payer
-                                    </button>
+                                        {% if data.freeze %}
+                                        <button data-product="{{data.id}}" style="width: 100%" class="btn btn-outline-secondary">
+                                            Freezé
+                                        </button>
+                                        {% else %}
+                                        <button data-product="{{data.id}}" style="width: 100%" class="btn btn-outline-primary send">
+                                            Payer
+                                        </button>
+                                        {% endif %}                                    
                                     {% else %}
                                     <button  style="width: 100%" class="btn btn-outline-success">
                                         Déjà payé
@@ -107,9 +131,15 @@
                                     {% endif %}
                                 {% else %}
                                     {% if data.sanction_tontine_paye == 0 %}
-                                    <button data-product="{{data.id}}" style="width: 100%" class="btn btn-outline-primary">
-                                        Payer
-                                    </button>
+                                        {% if data.freeze %}
+                                        <button data-product="{{data.id}}" style="width: 100%" class="btn btn-outline-secondary">
+                                            Freezé
+                                        </button>
+                                        {% else %}
+                                        <button data-product="{{data.id}}" style="width: 100%" class="btn btn-outline-primary">
+                                            Payer
+                                        </button>
+                                        {% endif %}
                                     {% else %}
                                     <button  style="width: 100%" class="btn btn-outline-success">
                                         Déjà payé

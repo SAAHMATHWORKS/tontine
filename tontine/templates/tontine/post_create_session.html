@@ -3,11 +3,16 @@
     <div class="container">
         <div class="content-section"> 
             <h3>LISTE DES SEANCES DE <strong>DIGNITE BANENGO</strong> </h3>
-            <p class='text-muted'>Cliquer 
+            <p class='text-muted'>Cliquer ou <a href="{% url 'create_session' %}">Créer une nouvelle séance</a>
               <ul class="list-group">
                 {% for seance in listseance %}
                 <li class="list-group-item list-group-item-light">
-                    <a href="{% url 'tontine' seance.id %}">{{ forloop.counter }}- DIGNITE BANENGO du: {{seance.date_seance|date:"d/m/Y"}}</a>
+                    <a href="{% url 'tontine' seance.id %}">{{ forloop.counter }}- DIGNITE BANENGO du : {{seance.date_seance|date:"d/m/Y"}} </a>
+                    {% if seance.closed %}
+                    <span class="badge badge-primary ml-2">fermé</span>
+                    {% else %}
+                    <span class="badge badge-danger ml-2">ouvert</span>
+                    {% endif %}
                 </li>                
                 {% endfor %}
               </ul>
